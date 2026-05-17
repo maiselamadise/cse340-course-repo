@@ -1,9 +1,8 @@
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
 
-dotenv.config();
+import { fileURLToPath } from 'url';
+import path from 'path';
+import { testConnection } from './src/models/db.js';
 
 // Recreate __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -55,7 +54,13 @@ app.get('/categories', async (req, res) => {
 /**
  * Server
  */
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    await testConnection();
+    console.log(`Server is running at http://127.0.0.1:${PORT}`);
     console.log(`Environment: ${NODE_ENV}`);
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+    process.exit(1); // Exit with failure code if database connection fails
+  }
 });
