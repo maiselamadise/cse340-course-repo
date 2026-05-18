@@ -2,6 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
+import { getAllOrganizations } from './src/models/organizations.js';
 
 // Recreate __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -28,14 +29,15 @@ app.set('views', path.join(__dirname, 'src/views'));
  */
 app.get('/', async (req, res) => {
     const title = 'Home';
-
     res.render('home', { title });
 });
 
 app.get('/organizations', async (req, res) => {
-    const title = 'Our Partner Organizations';
+    const organizations = await getAllOrganizations();
+    console.log('Organizations:', organizations ); // Log the retrieved organizations for debugging
 
-    res.render('organizations', { title });
+    const title = 'Organizations';
+    res.render('organizations', { title, organizations });
 });
 
 app.get('/projects', async (req, res) => {

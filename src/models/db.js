@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 
+
 /**
  * Connection pool for PostgreSQL database.
  * 
