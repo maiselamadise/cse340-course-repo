@@ -1,0 +1,23 @@
+<h1><%= project.project_name %></h1>
+
+<p>
+  Organization:
+  <a
+    href="/organization/<%= project.organization_id %>"
+  >
+    <%= project.organization_name %>
+  </a>
+</p>
+
+<h3>Categories</h3>
+
+<div class="category-tags">
+  <% categories.forEach(category => { %>
+    <a
+      class="tag"
+      href="/category/<%= category.category_id %>"
+    >
+      <%= category.category_name %>
+    </a>
+  <% }) %>
+</div>

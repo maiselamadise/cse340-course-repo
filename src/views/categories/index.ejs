@@ -1,0 +1,11 @@
+<h1>Categories</h1>
+
+<ul>
+  <% categories.forEach(category => { %>
+    <li>
+      <a href="/category/<%= category.category_id %>">
+        <%= category.category_name %>
+      </a>
+    </li>
+  <% }) %>
+</ul>
