@@ -1,3 +1,5 @@
+// src/controllers/organizationController.js
+
 import {
   getAllOrganizations,
   getOrganizationById,
@@ -29,6 +31,14 @@ const buildOrganizationDetails =
 
       const organization =
         await getOrganizationById(id)
+
+      if (!organization) {
+        return res
+          .status(404)
+          .render("errors/404", {
+            title: "Organization Not Found"
+          })
+      }
 
       const projects =
         await getProjectsByOrganizationId(id)

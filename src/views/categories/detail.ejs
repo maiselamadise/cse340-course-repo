@@ -1,11 +1,31 @@
-<h1><%= category.category_name %></h1>
+<!-- src/views/categories/detail.ejs -->
 
-<ul>
-  <% projects.forEach(project => { %>
-    <li>
-      <a href="/project/<%= project.project_id %>">
-        <%= project.project_name %>
-      </a>
-    </li>
-  <% }) %>
-</ul>
+<h1>
+  <%= category.category_name %>
+</h1>
+
+<h3>Projects</h3>
+
+<% if(projects.length > 0) { %>
+
+  <ul>
+
+    <% projects.forEach(project => { %>
+
+      <li>
+        <a
+          href="/projects/<%= project.project_id %>"
+        >
+          <%= project.project_name %>
+        </a>
+      </li>
+
+    <% }) %>
+
+  </ul>
+
+<% } else { %>
+
+  <p>No projects found.</p>
+
+<% } %>

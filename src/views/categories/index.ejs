@@ -1,11 +1,27 @@
+<!-- src/views/categories/index.ejs -->
+
 <h1>Categories</h1>
 
-<ul>
-  <% categories.forEach(category => { %>
-    <li>
-      <a href="/category/<%= category.category_id %>">
-        <%= category.category_name %>
-      </a>
-    </li>
-  <% }) %>
-</ul>
+<% if(categories.length > 0) { %>
+
+  <ul>
+
+    <% categories.forEach(category => { %>
+
+      <li>
+        <a
+          href="/categories/<%= category.category_id %>"
+        >
+          <%= category.category_name %>
+        </a>
+      </li>
+
+    <% }) %>
+
+  </ul>
+
+<% } else { %>
+
+  <p>No categories found.</p>
+
+<% } %>

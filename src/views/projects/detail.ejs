@@ -1,9 +1,14 @@
-<h1><%= project.project_name %></h1>
+<!-- src/views/projects/detail.ejs -->
+
+<h1>
+  <%= project.project_name %>
+</h1>
 
 <p>
   Organization:
+
   <a
-    href="/organization/<%= project.organization_id %>"
+    href="/organizations/<%= project.organization_id %>"
   >
     <%= project.organization_name %>
   </a>
@@ -11,13 +16,25 @@
 
 <h3>Categories</h3>
 
-<div class="category-tags">
-  <% categories.forEach(category => { %>
-    <a
-      class="tag"
-      href="/category/<%= category.category_id %>"
-    >
-      <%= category.category_name %>
-    </a>
-  <% }) %>
-</div>
+<% if(categories.length > 0) { %>
+
+  <div class="category-tags">
+
+    <% categories.forEach(category => { %>
+
+      <a
+        class="tag"
+        href="/categories/<%= category.category_id %>"
+      >
+        <%= category.category_name %>
+      </a>
+
+    <% }) %>
+
+  </div>
+
+<% } else { %>
+
+  <p>No categories assigned.</p>
+
+<% } %>

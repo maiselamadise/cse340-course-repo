@@ -1,3 +1,5 @@
+// server.js
+
 import express from "express"
 import dotenv from "dotenv"
 import path from "path"
@@ -36,6 +38,14 @@ app.use(
   )
 )
 
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
+
+app.use(express.json())
+
 app.set("view engine", "ejs")
 
 app.set(
@@ -55,20 +65,14 @@ app.use(
 )
 
 app.use(
-  "/organization",
-  organizationRoutes
+  "/projects",
+  projectRoutes
 )
-
-app.use("/projects", projectRoutes)
-
-app.use("/project", projectRoutes)
 
 app.use(
   "/categories",
   categoryRoutes
 )
-
-app.use("/category", categoryRoutes)
 
 app.use((req, res) => {
   res.status(404).render(

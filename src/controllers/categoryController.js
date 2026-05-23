@@ -1,3 +1,5 @@
+// src/controllers/categoryController.js
+
 import {
   getAllCategories,
   getCategoryById,
@@ -29,6 +31,14 @@ const buildCategoryDetails =
 
       const category =
         await getCategoryById(id)
+
+      if (!category) {
+        return res
+          .status(404)
+          .render("errors/404", {
+            title: "Category Not Found"
+          })
+      }
 
       const projects =
         await getProjectsByCategoryId(id)

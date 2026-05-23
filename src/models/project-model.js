@@ -1,6 +1,8 @@
+// src/models/project-model.js
+
 import db from "./db.js"
 
-const getUpcomingProjects =
+const getAllProjects =
   async () => {
     const query = `
       SELECT
@@ -10,8 +12,7 @@ const getUpcomingProjects =
       JOIN organization o
         ON p.organization_id =
            o.organization_id
-      ORDER BY start_date
-      LIMIT 5;
+      ORDER BY start_date;
     `
 
     const result =
@@ -41,6 +42,6 @@ const getProjectById =
   }
 
 export {
-  getUpcomingProjects,
+  getAllProjects,
   getProjectById
 }

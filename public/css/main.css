@@ -13,6 +13,53 @@ body {
     color: #222;
 }
 
+/* public/css/style.css */
+
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  color: #222;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.category-tags {
+  margin-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  background: #e5e7eb;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
 /* NAVIGATION */
 nav {
     background-color: #003366;

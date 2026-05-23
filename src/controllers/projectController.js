@@ -1,5 +1,7 @@
+// src/controllers/projectController.js
+
 import {
-  getUpcomingProjects,
+  getAllProjects,
   getProjectById
 } from "../models/project-model.js"
 
@@ -11,12 +13,15 @@ const buildProjects =
   async (req, res, next) => {
     try {
       const projects =
-        await getUpcomingProjects()
+        await getAllProjects()
 
-      res.render("projects/index", {
-        title: "Projects",
-        projects
-      })
+      res.render(
+        "projects/index",
+        {
+          title: "Projects",
+          projects
+        }
+      )
     } catch (error) {
       next(error)
     }
@@ -30,14 +35,25 @@ const buildProjectDetails =
       const project =
         await getProjectById(id)
 
+      if (!project) {
+        return res
+          .status(404)
+          .render("errors/404", {
+            title: "Project Not Found"
+          })
+      }
+
       const categories =
         await getCategoriesByProjectId(id)
 
-      res.render("projects/detail", {
-        title: project.project_name,
-        project,
-        categories
-      })
+      res.render(
+        "projects/detail",
+        {
+          title: project.project_name,
+          project,
+          categories
+        }
+      )
     } catch (error) {
       next(error)
     }
