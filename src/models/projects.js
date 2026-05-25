@@ -1,6 +1,6 @@
 // src/models/project-model.js
 
-import db from "./db.js"
+import pool from './db.js';
 
 const getAllProjects =
   async () => {
@@ -16,7 +16,7 @@ const getAllProjects =
     `
 
     const result =
-      await db.query(query)
+      await pool.query(query)
 
     return result.rows
   }
@@ -36,7 +36,7 @@ const getProjectById =
     `
 
     const result =
-      await db.query(query, [id])
+      await pool.query(query, [id])
 
     return result.rows[0]
   }

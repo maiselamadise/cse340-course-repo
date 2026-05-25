@@ -1,0 +1,15 @@
+import pool from './db.js';
+
+const getAllCategories = async () => {
+    const sql = `
+        SELECT category_id, category_name
+        FROM categories
+        ORDER BY category_name;
+    `;
+
+    const result = await pool.query(sql);
+
+    return result.rows;
+};
+
+export { getAllCategories };

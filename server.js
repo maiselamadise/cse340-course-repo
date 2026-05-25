@@ -1,110 +1,80 @@
-// server.js
+import express from 'express';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
-import express from "express"
-import dotenv from "dotenv"
-import path from "path"
+import { testConnection } from './src/models/db.js';
+import router from './src/routes.js';
 
-import { fileURLToPath }
-  from "url"
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+const PORT = process.env.PORT || 3000;
 
-import { testConnection }
-  from "./src/models/db.js"
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-import organizationRoutes
-  from "./src/routes/organizationRoute.js"
+const app = express();
 
-import projectRoutes
-  from "./src/routes/projectRoute.js"
+/*
+ * Middleware
+ */
 
-import categoryRoutes
-  from "./src/routes/categoryRoute.js"
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
 
-dotenv.config()
+// View engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'src/views'));
 
-const app = express()
-
-const __filename =
-  fileURLToPath(import.meta.url)
-
-const __dirname =
-  path.dirname(__filename)
-
-const PORT =
-  process.env.PORT || 3000
-
-app.use(
-  express.static(
-    path.join(__dirname, "public")
-  )
-)
-
-app.use(
-  express.urlencoded({
-    extended: true
-  })
-)
-
-app.use(express.json())
-
-app.set("view engine", "ejs")
-
-app.set(
-  "views",
-  path.join(__dirname, "src/views")
-)
-
-app.get("/", (req, res) => {
-  res.render("home", {
-    title: "Home"
-  })
-})
-
-app.use(
-  "/organizations",
-  organizationRoutes
-)
-
-app.use(
-  "/projects",
-  projectRoutes
-)
-
-app.use(
-  "/categories",
-  categoryRoutes
-)
-
-app.use((req, res) => {
-  res.status(404).render(
-    "errors/404",
-    {
-      title: "404"
+// Request logger
+app.use((req, res, next) => {
+    if (NODE_ENV === 'development') {
+        console.log(`${req.method} ${req.url}`);
     }
-  )
-})
 
+    next();
+});
+
+// Make NODE_ENV available in views
+app.use((req, res, next) => {
+    res.locals.NODE_ENV = NODE_ENV;
+    next();
+});
+
+// Routes
+app.use(router);
+
+// 404 handler
+app.use((req, res, next) => {
+    const err = new Error('Page Not Found');
+    err.status = 404;
+
+    next(err);
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack)
+    console.error('Error occurred:', err.message);
+    console.error(err.stack);
 
-  res.status(500).render(
-    "errors/500",
-    {
-      title: "Server Error",
-      error: err
-    }
-  )
-})
+    const status = err.status || 500;
+    const template = status === 404 ? '404' : '500';
 
+    const context = {
+        title: status === 404 ? 'Page Not Found' : 'Server Error',
+        error: err.message,
+        stack: err.stack
+    };
+
+    res.status(status).render(`errors/${template}`, context);
+});
+
+// Start server
 app.listen(PORT, async () => {
-  try {
-    await testConnection()
+    try {
+        await testConnection();
 
-    console.log(
-      `Server running on port ${PORT}`
-    )
-  } catch (error) {
-    console.error(error)
-
-    process.exit(1)
-  }
-})
+        console.log(`Server is running at http://127.0.0.1:${PORT}`);
+        console.log(`Environment: ${NODE_ENV}`);
+    } catch (error) {
+        console.error('Error connecting to the database:', error);
+    }
+});
