@@ -1,6 +1,6 @@
 import pool from './db.js';
 
-const getAllOrganizations = async () => {
+export const getAllOrganizations = async () => {
     const query = `
         SELECT
             organization_id,
@@ -9,7 +9,7 @@ const getAllOrganizations = async () => {
             contact_email,
             logo_filename
         FROM organization
-        ORDER BY organization_id;
+        ORDER BY name;
     `;
 
     const result = await pool.query(query);
@@ -17,7 +17,7 @@ const getAllOrganizations = async () => {
     return result.rows;
 };
 
-const getOrganizationDetails = async (organizationId) => {
+export const getOrganizationDetails = async (organizationId) => {
     const query = `
         SELECT
             organization_id,
@@ -29,10 +29,25 @@ const getOrganizationDetails = async (organizationId) => {
         WHERE organization_id = $1;
     `;
 
-    const queryParams = [organizationId];
-    const result = await pool.query(query, queryParams);
+    const result = await pool.query(query, [organizationId]);
 
-    return result.rows.length > 0 ? result.rows[0] : null;
+    return result.rows[0];
 };
 
-export { getAllOrganizations, getOrganizationDetails };
+export const getProjectsByOrganizationId = async (organizationId) => {
+    const query = `
+        SELECT
+            project_id,
+            title,
+            description,
+            start_date,
+            end_date
+        FROM projects
+        WHERE organization_id = $1
+        ORDER BY start_date;
+    `;
+
+    const result = await pool.query(query, [organizationId]);
+
+    return result.rows;
+};

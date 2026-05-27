@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+
+<main>
+    <h1><%= organization.name %></h1>
+
+    <% if (organization.logo_filename) { %>
+        <img
+            src="/images/<%= organization.logo_filename %>"
+            alt="<%= organization.name %> logo"
+            width="200"
+        >
+    <% } %>
+
+    <p><%= organization.description %></p>
+
+    <p>
+        Contact:
+        <%= organization.contact_email %>
+    </p>
+
+    <h2>Projects</h2>
+
+    <% if (projects.length === 0) { %>
+        <p>No projects found.</p>
+    <% } %>
+
+    <ul>
+        <% projects.forEach(project => { %>
+            <li>
+                <a href="/project/<%= project.project_id %>">
+                    <%= project.title %>
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</main>
+
+<%- include('partials/footer') %>

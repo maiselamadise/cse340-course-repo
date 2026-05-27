@@ -8,6 +8,7 @@ import router from './src/routes.js';
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,7 +19,8 @@ const app = express();
  */
 
 // Static files
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.static('public'));
 
 // View engine
 app.set('view engine', 'ejs');
@@ -61,7 +63,7 @@ app.use((err, req, res, next) => {
     const context = {
         title: status === 404 ? 'Page Not Found' : 'Server Error',
         error: err.message,
-        stack: err.stack
+        stack: NODE_ENV === 'development' ? err.stack : null
     };
 
     res.status(status).render(`errors/${template}`, context);

@@ -1,47 +1,44 @@
-// src/models/project-model.js
-
 import pool from './db.js';
 
-const getAllProjects =
-  async () => {
+export const getUpcomingProjects = async () => {
     const query = `
-      SELECT
-        p.*,
-        o.name AS organization_name
-      FROM projects p
-      JOIN organization o
-        ON p.organization_id =
-           o.organization_id
-      ORDER BY start_date;
-    `
+        SELECT
+            p.project_id,
+            p.title,
+            p.description,
+            p.start_date,
+            p.end_date,
+            o.organization_id,
+            o.name AS organization_name
+        FROM projects p
+        INNER JOIN organization o
+            ON p.organization_id = o.organization_id
+        ORDER BY p.start_date
+        LIMIT 5;
+    `;
 
-    const result =
-      await pool.query(query)
+    const result = await pool.query(query);
 
-    return result.rows
-  }
+    return result.rows;
+};
 
-const getProjectById =
-  async (id) => {
+export const getProjectById = async (projectId) => {
     const query = `
-      SELECT
-        p.*,
-        o.name AS organization_name,
-        o.organization_id
-      FROM projects p
-      JOIN organization o
-        ON p.organization_id =
-           o.organization_id
-      WHERE p.project_id = $1;
-    `
+        SELECT
+            p.project_id,
+            p.title,
+            p.description,
+            p.start_date,
+            p.end_date,
+            o.organization_id,
+            o.name AS organization_name
+        FROM projects p
+        INNER JOIN organization o
+            ON p.organization_id = o.organization_id
+        WHERE p.project_id = $1;
+    `;
 
-    const result =
-      await pool.query(query, [id])
+    const result = await pool.query(query, [projectId]);
 
-    return result.rows[0]
-  }
-
-export {
-  getAllProjects,
-  getProjectById
-}
+    return result.rows[0];
+};
