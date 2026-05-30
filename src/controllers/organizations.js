@@ -1,7 +1,8 @@
 import {
     getAllOrganizations,
     getOrganizationDetails,
-    getProjectsByOrganizationId
+    getProjectsByOrganizationId,
+    createOrganization
 } from '../models/organizations.js';
 
 export const showOrganizationsPage = async (req, res, next) => {
@@ -36,6 +37,32 @@ export const showOrganizationDetails = async (req, res, next) => {
             organization,
             projects
         });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const showNewOrganizationForm = async (req, res) => {
+    const title = 'Add New Organization';
+
+    res.render('new-organization', {
+        title
+    });
+};
+
+export const processNewOrganizationForm = async (req, res, next) => {
+    try {
+        const { name, description, contactEmail } = req.body;
+        const logoFilename = 'placeholder-logo.png';
+
+        const organizationId = await createOrganization(
+            name,
+            description,
+            contactEmail,
+            logoFilename
+        );
+
+        res.redirect(`/organization/${organizationId}`);
     } catch (err) {
         next(err);
     }
