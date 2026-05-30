@@ -4,7 +4,8 @@ import {
     getAllOrganizations,
     getOrganizationDetails,
     getProjectsByOrganizationId,
-    createOrganization
+    createOrganization,
+    updateOrganization
 } from '../models/organizations.js';
 
 // Define validation and sanitization rules for organization form
@@ -74,6 +75,56 @@ const showNewOrganizationForm = async (req, res) => {
     });
 };
 
+const showEditOrganizationForm = async (req, res, next) => {
+    try {
+        const organizationId = req.params.id;
+        const organizationDetails = await getOrganizationDetails(organizationId);
+
+        if (!organizationDetails) {
+            const err = new Error('Organization not found');
+            err.status = 404;
+            return next(err);
+        }
+
+        const title = 'Edit Organization';
+
+        res.render('edit-organization', { title, organizationDetails });
+    } catch (err) {
+        next(err);
+    }
+};
+
+const processEditOrganizationForm = async (req, res, next) => {
+    const results = validationResult(req);
+
+    if (!results.isEmpty()) {
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        return res.redirect('/edit-organization/' + req.params.id);
+    }
+
+    try {
+        const organizationId = req.params.id;
+        const { name, description, contactEmail, logoFilename } = req.body;
+
+        await updateOrganization(
+            organizationId,
+            name,
+            description,
+            contactEmail,
+            logoFilename
+        );
+
+        req.flash('success', 'Organization updated successfully!');
+
+        res.redirect(`/organization/${organizationId}`);
+    } catch (err) {
+        next(err);
+    }
+};
+
 const processNewOrganizationForm = async (req, res, next) => {
     const results = validationResult(req);
 
@@ -109,5 +160,7 @@ export {
     showOrganizationDetails,
     showNewOrganizationForm,
     processNewOrganizationForm,
+    showEditOrganizationForm,
+    processEditOrganizationForm,
     organizationValidation
 };
