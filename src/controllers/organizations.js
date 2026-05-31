@@ -27,7 +27,14 @@ const organizationValidation = [
         .notEmpty()
         .withMessage('Contact email is required')
         .isEmail()
-        .withMessage('Please provide a valid email address')
+        .withMessage('Please provide a valid email address'),
+    body('logoFilename')
+        .optional({ values: 'falsy' })
+        .trim()
+        .notEmpty()
+        .withMessage('Logo filename is required')
+        .isLength({ max: 255 })
+        .withMessage('Logo filename cannot exceed 255 characters')
 ];
 
 const showOrganizationsPage = async (req, res, next) => {

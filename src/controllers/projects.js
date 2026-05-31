@@ -16,7 +16,7 @@ const projectValidation = [
     body('title')
         .trim()
         .notEmpty().withMessage('Title is required')
-        .isLength({ min: 3, max: 200 }).withMessage('Title must be between 3 and 200 characters'),
+        .isLength({ min: 3, max: 150 }).withMessage('Title must be between 3 and 150 characters'),
     body('description')
         .trim()
         .notEmpty().withMessage('Description is required')

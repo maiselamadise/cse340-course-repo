@@ -30,15 +30,16 @@
         <p>No categories assigned.</p>
     <% } %>
 
-    <ul>
+    <div class="category-tags">
         <% categories.forEach(category => { %>
-            <li>
-                <a href="/category/<%= category.category_id %>">
-                    <%= category.category_name %>
-                </a>
-            </li>
+            <a
+                class="category-tag"
+                href="/category/<%= category.category_id %>"
+            >
+                <%= category.category_name %>
+            </a>
         <% }) %>
-    </ul>
+    </div>
 </main>
 
 <%- include('partials/footer') %>

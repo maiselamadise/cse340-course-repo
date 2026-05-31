@@ -13,6 +13,7 @@ export const getUpcomingProjects = async () => {
         FROM projects p
         INNER JOIN organization o
             ON p.organization_id = o.organization_id
+        WHERE p.start_date >= CURRENT_DATE
         ORDER BY p.start_date
         LIMIT 5;
     `;
