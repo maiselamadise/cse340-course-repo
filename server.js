@@ -88,7 +88,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
     try {
         await testConnection();
 
@@ -97,4 +97,13 @@ app.listen(PORT, async () => {
     } catch (error) {
         console.error('Error connecting to the database:', error);
     }
+});
+
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Stop the other server or set a different PORT.`);
+        process.exit(1);
+    }
+
+    throw error;
 });
