@@ -62,6 +62,9 @@ app.use((req, res, next) => {
 // Routes
 app.use(router);
 
+// Browsers request this automatically; avoid noisy 404 logs when none is provided
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // 404 handler
 app.use((req, res, next) => {
     const err = new Error('Page Not Found');
