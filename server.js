@@ -1,12 +1,15 @@
 import express from 'express';
+import session from 'express-session';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
 import { testConnection } from './src/models/db.js';
 import router from './src/routes.js';
+import flash from './src/middleware/flash.js';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,6 +20,17 @@ const app = express();
 /*
  * Middleware
  */
+
+// Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
+
+// Use flash message middleware
+app.use(flash);
 
 // Allow Express to receive and process common POST data
 app.use(express.urlencoded({ extended: true }));
@@ -48,6 +62,9 @@ app.use((req, res, next) => {
 // Routes
 app.use(router);
 
+// Browsers request this automatically; avoid noisy 404 logs when none is provided
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // 404 handler
 app.use((req, res, next) => {
     const err = new Error('Page Not Found');
@@ -74,7 +91,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, async () => {
+const server = app.listen(PORT, async () => {
     try {
         await testConnection();
 
@@ -83,4 +100,13 @@ app.listen(PORT, async () => {
     } catch (error) {
         console.error('Error connecting to the database:', error);
     }
+});
+
+server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Stop the other server or set a different PORT.`);
+        process.exit(1);
+    }
+
+    throw error;
 });

@@ -23,6 +23,7 @@ CREATE TABLE projects (
     organization_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
+    location VARCHAR(255),
     start_date DATE,
     end_date DATE,
 

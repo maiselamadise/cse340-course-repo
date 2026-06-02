@@ -24,19 +24,24 @@
 
     <h2>Categories</h2>
 
+    <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
+
+    <p><a href="/assign-categories/<%= project.project_id %>">Edit Categories</a></p>
+
     <% if (categories.length === 0) { %>
         <p>No categories assigned.</p>
     <% } %>
 
-    <ul>
+    <div class="category-tags">
         <% categories.forEach(category => { %>
-            <li>
-                <a href="/category/<%= category.category_id %>">
-                    <%= category.category_name %>
-                </a>
-            </li>
+            <a
+                class="category-tag"
+                href="/category/<%= category.category_id %>"
+            >
+                <%= category.category_name %>
+            </a>
         <% }) %>
-    </ul>
+    </div>
 </main>
 
 <%- include('partials/footer') %>

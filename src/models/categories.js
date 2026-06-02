@@ -68,3 +68,58 @@ export const getProjectsByCategoryId = async (categoryId) => {
 
     return result.rows;
 };
+
+const assignCategoryToProject = async (projectId, categoryId) => {
+    const query = `
+        INSERT INTO project_categories (project_id, category_id)
+        VALUES ($1, $2);
+    `;
+
+    await pool.query(query, [projectId, categoryId]);
+};
+
+export const createCategory = async (categoryName) => {
+    const query = `
+        INSERT INTO categories (category_name)
+        VALUES ($1)
+        RETURNING category_id;
+    `;
+
+    const result = await pool.query(query, [categoryName]);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to create category');
+    }
+
+    return result.rows[0].category_id;
+};
+
+export const updateCategory = async (categoryId, categoryName) => {
+    const query = `
+        UPDATE categories
+        SET category_name = $1
+        WHERE category_id = $2
+        RETURNING category_id;
+    `;
+
+    const result = await pool.query(query, [categoryName, categoryId]);
+
+    if (result.rows.length === 0) {
+        throw new Error('Category not found');
+    }
+
+    return result.rows[0].category_id;
+};
+
+export const updateCategoryAssignments = async (projectId, categoryIds) => {
+    const deleteQuery = `
+        DELETE FROM project_categories
+        WHERE project_id = $1;
+    `;
+
+    await pool.query(deleteQuery, [projectId]);
+
+    for (const categoryId of categoryIds) {
+        await assignCategoryToProject(projectId, categoryId);
+    }
+};
