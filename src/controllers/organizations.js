@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+import { body, param, validationResult } from 'express-validator';
 
 import {
     getAllOrganizations,
@@ -35,6 +35,11 @@ const organizationValidation = [
         .withMessage('Logo filename is required')
         .isLength({ max: 255 })
         .withMessage('Logo filename cannot exceed 255 characters')
+];
+
+const organizationIdValidation = [
+    param('id')
+        .isInt().withMessage('Invalid organization ID')
 ];
 
 const showOrganizationsPage = async (req, res, next) => {
@@ -83,6 +88,16 @@ const showNewOrganizationForm = async (req, res) => {
 };
 
 const showEditOrganizationForm = async (req, res, next) => {
+    const results = validationResult(req);
+
+    if (!results.isEmpty()) {
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        return res.redirect('/organizations');
+    }
+
     try {
         const organizationId = req.params.id;
         const organizationDetails = await getOrganizationDetails(organizationId);
@@ -169,5 +184,6 @@ export {
     processNewOrganizationForm,
     showEditOrganizationForm,
     processEditOrganizationForm,
-    organizationValidation
+    organizationValidation,
+    organizationIdValidation
 };
