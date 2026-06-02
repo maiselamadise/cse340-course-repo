@@ -2,7 +2,7 @@
     
 // Define any controller functions
 
-// Test route for 500 errors
+// Test route for 500 error
 const testErrorPage = (req, res, next) => {
     const err = new Error('This is a test error');
     err.status = 500;

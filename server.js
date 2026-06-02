@@ -107,6 +107,7 @@ server.on('error', (error) => {
         console.error(`Port ${PORT} is already in use. Stop the other server or set a different PORT.`);
         process.exit(1);
     }
+    
 
     throw error;
 });
