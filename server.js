@@ -9,7 +9,8 @@ import flash from './src/middleware/flash.js';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const SESSION_SECRET =
+    process.env.SESSION_SECRET || 'local-development-secret';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,8 +26,11 @@ const app = express();
 app.use(session({
     secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000,
+        secure: NODE_ENV === 'production'
+    }
 }));
 
 // Use flash message middleware
