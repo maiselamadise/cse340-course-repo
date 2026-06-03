@@ -16,7 +16,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node --env-file=.env server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
