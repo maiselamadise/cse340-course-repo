@@ -27,6 +27,11 @@
                     Start Date:
                     <%= project.start_date %>
                 </p>
+
+                <p class="actions">
+                    <a href="/edit-project/<%= project.project_id %>">Edit</a> |
+                    <a href="/project/<%= project.project_id %>">View Details</a>
+                </p>
             </li>
         <% }) %>
     </ul>
