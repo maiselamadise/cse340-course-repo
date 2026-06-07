@@ -38,57 +38,177 @@ import {
     assignCategoriesValidation
 } from './controllers/categories.js';
 
+import {
+    showUserRegistrationForm,
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout,
+    requireLogin,
+    showDashboard
+} from './controllers/users.js';
+
 import { testErrorPage } from './controllers/errors.js';
 
 const router = express.Router();
 
-// Main routes
+/* =========================
+   HOME
+========================= */
+
 router.get('/', showHomePage);
 
-// Organizations
-router.get('/organizations', showOrganizationsPage);
+/* =========================
+   ORGANIZATIONS
+========================= */
 
+router.get('/organizations', showOrganizationsPage);
 router.get('/organization/:id', showOrganizationDetails);
 
-router.get('/new-organization', showNewOrganizationForm);
+router.get(
+    '/new-organization',
+    showNewOrganizationForm
+);
 
-router.post('/new-organization', organizationValidation, processNewOrganizationForm);
+router.post(
+    '/new-organization',
+    organizationValidation,
+    processNewOrganizationForm
+);
 
-router.get('/edit-organization/:id', organizationIdValidation, showEditOrganizationForm);
+router.get(
+    '/edit-organization/:id',
+    organizationIdValidation,
+    showEditOrganizationForm
+);
 
-router.post('/edit-organization/:id', organizationIdValidation, organizationValidation, processEditOrganizationForm);
+router.post(
+    '/edit-organization/:id',
+    organizationIdValidation,
+    organizationValidation,
+    processEditOrganizationForm
+);
 
-// Projects
+/* =========================
+   PROJECTS
+========================= */
+
 router.get('/projects', showProjectsPage);
-
 router.get('/project/:id', showProjectDetails);
 
-router.get('/new-project', showNewProjectForm);
+router.get(
+    '/new-project',
+    showNewProjectForm
+);
 
-router.post('/new-project', projectValidation, processNewProjectForm);
+router.post(
+    '/new-project',
+    projectValidation,
+    processNewProjectForm
+);
 
-router.get('/edit-project/:id', projectIdValidation, showEditProjectForm);
+router.get(
+    '/edit-project/:id',
+    projectIdValidation,
+    showEditProjectForm
+);
 
-router.post('/edit-project/:id', projectIdValidation, projectValidation, processEditProjectForm);
+router.post(
+    '/edit-project/:id',
+    projectIdValidation,
+    projectValidation,
+    processEditProjectForm
+);
 
-// Categories
+/* =========================
+   CATEGORIES
+========================= */
+
 router.get('/categories', showCategoriesPage);
-
 router.get('/category/:id', showCategoryDetails);
 
-router.get('/new-category', showNewCategoryForm);
+router.get(
+    '/new-category',
+    showNewCategoryForm
+);
 
-router.post('/new-category', categoryValidation, processNewCategoryForm);
+router.post(
+    '/new-category',
+    categoryValidation,
+    processNewCategoryForm
+);
 
-router.get('/edit-category/:id', categoryIdValidation, showEditCategoryForm);
+router.get(
+    '/edit-category/:id',
+    categoryIdValidation,
+    showEditCategoryForm
+);
 
-router.post('/edit-category/:id', categoryIdValidation, categoryValidation, processEditCategoryForm);
+router.post(
+    '/edit-category/:id',
+    categoryIdValidation,
+    categoryValidation,
+    processEditCategoryForm
+);
 
-router.get('/assign-categories/:projectId', assignCategoriesValidation, showAssignCategoriesForm);
+router.get(
+    '/assign-categories/:projectId',
+    assignCategoriesValidation,
+    showAssignCategoriesForm
+);
 
-router.post('/assign-categories/:projectId', assignCategoriesValidation, processAssignCategoriesForm);
+router.post(
+    '/assign-categories/:projectId',
+    assignCategoriesValidation,
+    processAssignCategoriesForm
+);
 
-// Error testing route
-router.get('/test-error', testErrorPage);
+/* =========================
+   USERS
+========================= */
+
+// Registration
+router.get(
+    '/register',
+    showUserRegistrationForm
+);
+
+router.post(
+    '/register',
+    processUserRegistrationForm
+);
+
+// Login
+router.get(
+    '/login',
+    showLoginForm
+);
+
+router.post(
+    '/login',
+    processLoginForm
+);
+
+// Logout
+router.get(
+    '/logout',
+    processLogout
+);
+
+// Protected Dashboard
+router.get(
+    '/dashboard',
+    requireLogin,
+    showDashboard
+);
+
+/* =========================
+   ERROR TESTING
+========================= */
+
+router.get(
+    '/test-error',
+    testErrorPage
+);
 
 export default router;

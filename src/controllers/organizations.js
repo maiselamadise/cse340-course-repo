@@ -185,5 +185,5 @@ export {
     showEditOrganizationForm,
     processEditOrganizationForm,
     organizationValidation,
-    organizationIdValidation
+    organizationIdValidation,
 };
