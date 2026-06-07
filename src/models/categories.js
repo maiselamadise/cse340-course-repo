@@ -61,7 +61,8 @@ export const getProjectsByCategoryId = async (categoryId) => {
         INNER JOIN organization o
             ON p.organization_id = o.organization_id
         WHERE pc.category_id = $1
-        ORDER BY p.start_date;
+        ORDER BY p.start_date
+        LIMIT 100;
     `;
 
     const result = await pool.query(query, [categoryId]);
@@ -119,7 +120,14 @@ export const updateCategoryAssignments = async (projectId, categoryIds) => {
 
     await pool.query(deleteQuery, [projectId]);
 
-    for (const categoryId of categoryIds) {
-        await assignCategoryToProject(projectId, categoryId);
+    if (categoryIds.length > 0) {
+        const valueStrings = categoryIds.map((_, i) => `($1, $${i + 2})`).join(', ');
+        const insertQuery = `
+            INSERT INTO project_categories (project_id, category_id)
+            VALUES ${valueStrings};
+        `;
+
+        const queryParams = [projectId, ...categoryIds];
+        await pool.query(insertQuery, queryParams);
     }
 };

@@ -26,9 +26,12 @@ const projectValidation = [
         .trim()
         .notEmpty().withMessage('Location is required')
         .isLength({ max: 255 }).withMessage('Location must be less than 255 characters'),
-    body('date')
-        .notEmpty().withMessage('Date is required')
-        .isISO8601().withMessage('Date must be a valid date format'),
+    body('startDate')
+        .notEmpty().withMessage('Start date is required')
+        .isISO8601().withMessage('Start date must be a valid date format'),
+    body('endDate')
+        .optional({ values: 'falsy' })
+        .isISO8601().withMessage('End date must be a valid date format'),
     body('organizationId')
         .notEmpty().withMessage('Organization is required')
         .isInt().withMessage('Organization must be a valid integer')
@@ -98,10 +101,10 @@ export const processNewProjectForm = async (req, res, next) => {
         return res.redirect('/new-project');
     }
 
-    const { title, description, location, date, organizationId } = req.body;
+    const { title, description, location, startDate, endDate, organizationId } = req.body;
 
     try {
-        await createProject(title, description, location, date, organizationId);
+        await createProject(title, description, location, startDate, endDate, organizationId);
 
         req.flash('success', 'New service project created successfully!');
         res.redirect('/projects');
@@ -150,21 +153,21 @@ export const processEditProjectForm = async (req, res, next) => {
             req.flash('error', error.msg);
         });
 
-        return res.redirect('/edit-project/' + req.params.id);
+        return res.redirect(`/edit-project/${req.params.id}`);
     }
 
-    const { title, description, location, date, organizationId } = req.body;
+    const { title, description, location, startDate, endDate, organizationId } = req.body;
     const { id } = req.params;
 
     try {
-        await updateProject(id, title, description, location, date, organizationId);
+        await updateProject(id, title, description, location, startDate, endDate, organizationId);
 
         req.flash('success', 'Service project updated successfully!');
         res.redirect(`/project/${id}`);
     } catch (error) {
         console.error('Error updating project:', error);
         req.flash('error', 'There was an error updating the service project.');
-        res.redirect('/edit-project/' + id);
+        res.redirect(`/edit-project/${id}`);
     }
 };
 

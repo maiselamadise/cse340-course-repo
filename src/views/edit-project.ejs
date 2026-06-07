@@ -39,13 +39,23 @@
     </div>
 
     <div class="form-group">
-      <label for="date">Date</label>
+      <label for="startDate">Start Date</label>
       <input
         type="date"
-        id="date"
-        name="date"
+        id="startDate"
+        name="startDate"
         value="<%= project.start_date ? String(project.start_date).slice(0, 10) : '' %>"
         required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">End Date</label>
+      <input
+        type="date"
+        id="endDate"
+        name="endDate"
+        value="<%= project.end_date ? String(project.end_date).slice(0, 10) : '' %>"
       />
     </div>
 
