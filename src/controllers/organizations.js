@@ -124,7 +124,7 @@ const processEditOrganizationForm = async (req, res, next) => {
             req.flash('error', error.msg);
         });
 
-        return res.redirect('/edit-organization/' + req.params.id);
+        return res.redirect(`/edit-organization/${req.params.id}`);
     }
 
     try {

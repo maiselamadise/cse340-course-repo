@@ -49,16 +49,17 @@ export const createProject = async (
     title,
     description,
     location,
-    date,
+    startDate,
+    endDate,
     organizationId
 ) => {
     const query = `
-        INSERT INTO projects (title, description, location, start_date, organization_id)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO projects (title, description, location, start_date, end_date, organization_id)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING project_id;
     `;
 
-    const queryParams = [title, description, location, date, organizationId];
+    const queryParams = [title, description, location, startDate, endDate, organizationId];
     const result = await pool.query(query, queryParams);
 
     if (result.rows.length === 0) {
@@ -77,17 +78,18 @@ export const updateProject = async (
     title,
     description,
     location,
-    date,
+    startDate,
+    endDate,
     organizationId
 ) => {
     const query = `
         UPDATE projects
-        SET title = $1, description = $2, location = $3, start_date = $4, organization_id = $5
-        WHERE project_id = $6
+        SET title = $1, description = $2, location = $3, start_date = $4, end_date = $5, organization_id = $6
+        WHERE project_id = $7
         RETURNING project_id;
     `;
 
-    const queryParams = [title, description, location, date, organizationId, projectId];
+    const queryParams = [title, description, location, startDate, endDate, organizationId, projectId];
     const result = await pool.query(query, queryParams);
 
     if (result.rows.length === 0) {
