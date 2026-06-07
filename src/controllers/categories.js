@@ -144,7 +144,7 @@ export const processEditCategoryForm = async (req, res, next) => {
             req.flash('error', error.msg);
         });
 
-        return res.redirect('/edit-category/' + req.params.id);
+        return res.redirect(`/edit-category/${req.params.id}`);
     }
 
     try {
@@ -158,7 +158,7 @@ export const processEditCategoryForm = async (req, res, next) => {
     } catch (err) {
         if (err.code === '23505') {
             req.flash('error', 'A category with that name already exists.');
-            return res.redirect('/edit-category/' + req.params.id);
+            return res.redirect(`/edit-category/${req.params.id}`);
         }
 
         next(err);
@@ -212,7 +212,7 @@ export const processAssignCategoriesForm = async (req, res, next) => {
             req.flash('error', error.msg);
         });
 
-        return res.redirect('/assign-categories/' + req.params.projectId);
+        return res.redirect(`/assign-categories/${req.params.projectId}`);
     }
 
     try {
