@@ -1,31 +1,35 @@
-<!-- src/views/categories/detail.ejs -->
+<%- include('../partials/header') %>
 
-<h1>
-  <%= category.category_name %>
-</h1>
+<main>
+    <h1>
+      <%= category.category_name %>
+    </h1>
 
-<h3>Projects</h3>
+    <h3>Projects</h3>
 
-<% if(projects.length > 0) { %>
+    <% if(projects.length > 0) { %>
 
-  <ul>
+      <ul>
 
-    <% projects.forEach(project => { %>
+        <% projects.forEach(project => { %>
 
-      <li>
-        <a
-          href="/project/<%= project.project_id %>"
-        >
-          <%= project.title %>
-        </a>
-      </li>
+          <li>
+            <a
+              href="/project/<%= project.project_id %>"
+            >
+              <%= project.title %>
+            </a>
+          </li>
 
-    <% }) %>
+        <% }) %>
 
-  </ul>
+      </ul>
 
-<% } else { %>
+    <% } else { %>
 
-  <p>No projects found.</p>
+      <p>No projects found.</p>
 
-<% } %>
+    <% } %>
+</main>
+
+<%- include('../partials/footer') %>
