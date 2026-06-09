@@ -1,5 +1,13 @@
+<h1><%= title %></h1>
+
+<link rel="stylesheet" href="/css/main.css"> 
+
 <% if (isLoggedIn) { %>
     <p>
         <a href="/dashboard">My Dashboard</a>
+    </p>
+<% } else { %>
+    <p>
+        <a href="/login">Login</a>
     </p>
 <% } %>

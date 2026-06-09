@@ -76,13 +76,13 @@ router.get(
 
 // Show new organization form
 router.get(
-    '/new-organizations',
+    '/new-organization',
     showNewOrganizationForm
 );
 
 // Process new organization form
 router.post(
-    '/new-organizations',
+    '/new-organization',
     organizationValidation,
     processNewOrganizationForm
 );
@@ -92,6 +92,14 @@ router.get(
     '/edit-organization/:id',
     organizationIdValidation,
     showEditOrganizationForm
+);
+
+// Process edit organization form
+router.post(
+    '/edit-organization/:id',
+    organizationIdValidation,
+    organizationValidation,
+    processEditOrganizationForm
 );
 
 // Process edit organization form
