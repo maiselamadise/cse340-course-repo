@@ -3,25 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title><%= title %></title>
-    
-    <link rel="stylesheet" href="/css/styles.css">
+
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
-</head>
 <body>
-<ul>
-    <% if (isLoggedIn) { %>
-        <li>
-            <a href="/logout">Logout</a>
-        </li>
-    <% } else { %>
-        <li>
-            <a href="/register">Register</a>
-        </li>
 
-        <li>
-            <a href="/login">Login</a>
-        </li>
-    <% } %>
-</ul>
+<header>
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/organizations">
+            Organizations
+        </a>
+
+        <a href="/projects">
+            Projects
+        </a>
+
+        <a href="/categories">
+            Categories
+        </a>
+
+        <% if (user) { %>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        <% } else { %>
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a href="/register">
+                Register
+            </a>
+
+        <% } %>
+
+        <% if (user && user.role === 'admin') { %>
+
+            <a href="/new-project">
+                New Project
+            </a>
+
+            <a href="/new-organization">
+                New Organization
+            </a>
+
+            <a href="/new-category">
+                New Category
+            </a>
+
+        <% } %>
+
+    </nav>
+
+</header>

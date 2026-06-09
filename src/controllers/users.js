@@ -1,88 +1,167 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+import {
+    createUser,
+    authenticateUser
+} from '../models/users.js';
+
+/* =========================
+   SHOW REGISTER PAGE
+========================= */
 
 const showUserRegistrationForm = (req, res) => {
-    res.render('register', { title: 'Register' });
+
+    res.render('register', {
+        title: 'Register'
+    });
 };
 
+/* =========================
+   PROCESS REGISTRATION
+========================= */
+
 const processUserRegistrationForm = async (req, res) => {
-    const { name, email, password } = req.body;
+
+    const {
+        name,
+        email,
+        password
+    } = req.body;
 
     try {
-        // Hash the password before storing it
+
+        // Hash password
         const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(password, salt);
 
-        // Create the user in the database
-        await createUser(name, email, passwordHash);
+        const passwordHash = await bcrypt.hash(
+            password,
+            salt
+        );
 
-        req.flash('success', 'Registration successful! Please log in.');
+        // Create user
+        await createUser(
+            name,
+            email,
+            passwordHash
+        );
+
+        req.flash(
+            'success',
+            'Registration successful! Please log in.'
+        );
+
         return res.redirect('/login');
+
     } catch (error) {
-        console.error('Error registering user:', error);
+
+        console.error(
+            'Error registering user:',
+            error
+        );
 
         req.flash(
             'error',
-            'An error occurred during registration. Please try again.'
+            'Registration failed. Please try again.'
         );
 
         return res.redirect('/register');
     }
 };
 
-/**
- * Show login form
- */
+/* =========================
+   SHOW LOGIN PAGE
+========================= */
+
 const showLoginForm = (req, res) => {
+
     res.render('login', {
         title: 'Login'
     });
 };
 
-/**
- * Process login form
- */
+/* =========================
+   PROCESS LOGIN
+========================= */
+
 const processLoginForm = async (req, res) => {
-    const { email, password } = req.body;
+
+    const {
+        email,
+        password
+    } = req.body;
 
     try {
-        const user = await authenticateUser(email, password);
 
-        if (user) {
-            // Store user in session
-            req.session.user = user;
+        const user = await authenticateUser(
+            email,
+            password
+        );
 
-            req.flash('success', 'Login successful!');
+        // Invalid login
+        if (!user) {
 
-            console.log('User logged in:', user);
+            req.flash(
+                'error',
+                'Invalid email or password.'
+            );
 
-            return res.redirect('/dashboard');
+            return res.redirect('/login');
         }
 
-        req.flash('error', 'Invalid email or password.');
-        return res.redirect('/login');
+        // Save user in session
+        req.session.user = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+        };
+
+        req.flash(
+            'success',
+            'Login successful!'
+        );
+
+        console.log(
+            'User logged in:',
+            req.session.user
+        );
+
+        return res.redirect('/dashboard');
 
     } catch (error) {
-        console.error('Error during login:', error);
+
+        console.error(
+            'Error during login:',
+            error
+        );
 
         req.flash(
             'error',
-            'An error occurred during login. Please try again.'
+            'Login failed. Please try again.'
         );
 
         return res.redirect('/login');
     }
 };
 
-/**
- * Process logout
- */
-const processLogout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Error during logout:', err);
+/* =========================
+   PROCESS LOGOUT
+========================= */
 
-            req.flash('error', 'Logout failed.');
+const processLogout = (req, res) => {
+
+    req.session.destroy((error) => {
+
+        if (error) {
+
+            console.error(
+                'Error during logout:',
+                error
+            );
+
+            req.flash(
+                'error',
+                'Logout failed.'
+            );
 
             return res.redirect('/');
         }
@@ -91,11 +170,17 @@ const processLogout = (req, res) => {
     });
 };
 
-/**
- * Middleware to protect routes
- */
+/* =========================
+   REQUIRE LOGIN
+========================= */
+
 const requireLogin = (req, res, next) => {
-    if (!req.session || !req.session.user) {
+
+    if (
+        !req.session ||
+        !req.session.user
+    ) {
+
         req.flash(
             'error',
             'You must be logged in to access that page.'
@@ -107,18 +192,64 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-/**
- * Show dashboard page
- */
+/* =========================
+   REQUIRE ROLE
+========================= */
+
+const requireRole = (role) => {
+
+    return (req, res, next) => {
+
+        // Must be logged in
+        if (
+            !req.session ||
+            !req.session.user
+        ) {
+
+            req.flash(
+                'error',
+                'You must be logged in.'
+            );
+
+            return res.redirect('/login');
+        }
+
+        // Check role
+        if (
+            req.session.user.role !== role
+        ) {
+
+            req.flash(
+                'error',
+                'Access denied.'
+            );
+
+            return res.redirect('/dashboard');
+        }
+
+        next();
+    };
+};
+
+/* =========================
+   DASHBOARD
+========================= */
+
 const showDashboard = (req, res) => {
+
     const user = req.session.user;
 
     res.render('dashboard', {
         title: 'Dashboard',
         name: user.name,
-        email: user.email
+        email: user.email,
+        role: user.role
     });
 };
+
+/* =========================
+   EXPORTS
+========================= */
 
 export {
     showUserRegistrationForm,
@@ -127,5 +258,6 @@ export {
     processLoginForm,
     processLogout,
     requireLogin,
+    requireRole,
     showDashboard
 };

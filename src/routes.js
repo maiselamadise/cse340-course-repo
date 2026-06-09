@@ -45,6 +45,7 @@ import {
     processLoginForm,
     processLogout,
     requireLogin,
+    requireRole,
     showDashboard
 } from './controllers/users.js';
 
@@ -68,7 +69,7 @@ router.get(
     showOrganizationsPage
 );
 
-// View a single organization
+// View single organization
 router.get(
     '/organization/:id',
     showOrganizationDetails
@@ -77,12 +78,14 @@ router.get(
 // Show new organization form
 router.get(
     '/new-organization',
+    requireRole('admin'),
     showNewOrganizationForm
 );
 
 // Process new organization form
 router.post(
     '/new-organization',
+    requireRole('admin'),
     organizationValidation,
     processNewOrganizationForm
 );
@@ -90,6 +93,7 @@ router.post(
 // Show edit organization form
 router.get(
     '/edit-organization/:id',
+    requireRole('admin'),
     organizationIdValidation,
     showEditOrganizationForm
 );
@@ -97,14 +101,7 @@ router.get(
 // Process edit organization form
 router.post(
     '/edit-organization/:id',
-    organizationIdValidation,
-    organizationValidation,
-    processEditOrganizationForm
-);
-
-// Process edit organization form
-router.post(
-    '/edit-organization/:id',
+    requireRole('admin'),
     organizationIdValidation,
     organizationValidation,
     processEditOrganizationForm
@@ -114,28 +111,45 @@ router.post(
    PROJECTS
 ========================= */
 
-router.get('/projects', showProjectsPage);
-router.get('/project/:id', showProjectDetails);
+// List all projects
+router.get(
+    '/projects',
+    showProjectsPage
+);
 
+// View single project
+router.get(
+    '/project/:id',
+    showProjectDetails
+);
+
+// Show new project form
 router.get(
     '/new-project',
+    requireRole('admin'),
     showNewProjectForm
 );
 
+// Process new project form
 router.post(
     '/new-project',
+    requireRole('admin'),
     projectValidation,
     processNewProjectForm
 );
 
+// Show edit project form
 router.get(
     '/edit-project/:id',
+    requireRole('admin'),
     projectIdValidation,
     showEditProjectForm
 );
 
+// Process edit project form
 router.post(
     '/edit-project/:id',
+    requireRole('admin'),
     projectIdValidation,
     projectValidation,
     processEditProjectForm
@@ -145,41 +159,62 @@ router.post(
    CATEGORIES
 ========================= */
 
-router.get('/categories', showCategoriesPage);
-router.get('/category/:id', showCategoryDetails);
+// List all categories
+router.get(
+    '/categories',
+    showCategoriesPage
+);
 
+// View single category
+router.get(
+    '/category/:id',
+    showCategoryDetails
+);
+
+// Show new category form
 router.get(
     '/new-category',
+    requireRole('admin'),
     showNewCategoryForm
 );
 
+// Process new category form
 router.post(
     '/new-category',
+    requireRole('admin'),
     categoryValidation,
     processNewCategoryForm
 );
 
+// Show edit category form
 router.get(
     '/edit-category/:id',
+    requireRole('admin'),
     categoryIdValidation,
     showEditCategoryForm
 );
 
+// Process edit category form
 router.post(
     '/edit-category/:id',
+    requireRole('admin'),
     categoryIdValidation,
     categoryValidation,
     processEditCategoryForm
 );
 
+// Show assign categories form
 router.get(
     '/assign-categories/:projectId',
+    requireRole('admin'),
     assignCategoriesValidation,
     showAssignCategoriesForm
 );
 
+// Process assign categories form
 router.post(
     '/assign-categories/:projectId',
+    requireRole('admin'),
     assignCategoriesValidation,
     processAssignCategoriesForm
 );
@@ -216,7 +251,7 @@ router.get(
     processLogout
 );
 
-// Protected Dashboard
+// Dashboard
 router.get(
     '/dashboard',
     requireLogin,
