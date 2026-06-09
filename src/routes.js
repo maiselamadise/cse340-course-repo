@@ -62,26 +62,39 @@ router.get('/', showHomePage);
    ORGANIZATIONS
 ========================= */
 
-router.get('/organizations', showOrganizationsPage);
-router.get('/organization/:id', showOrganizationDetails);
-
+// List all organizations
 router.get(
-    '/new-organization',
+    '/organizations',
+    showOrganizationsPage
+);
+
+// View a single organization
+router.get(
+    '/organization/:id',
+    showOrganizationDetails
+);
+
+// Show new organization form
+router.get(
+    '/new-organizations',
     showNewOrganizationForm
 );
 
+// Process new organization form
 router.post(
-    '/new-organization',
+    '/new-organizations',
     organizationValidation,
     processNewOrganizationForm
 );
 
+// Show edit organization form
 router.get(
     '/edit-organization/:id',
     organizationIdValidation,
     showEditOrganizationForm
 );
 
+// Process edit organization form
 router.post(
     '/edit-organization/:id',
     organizationIdValidation,
