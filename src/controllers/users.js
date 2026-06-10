@@ -22,11 +22,7 @@ const showUserRegistrationForm = (req, res) => {
 
 const processUserRegistrationForm = async (req, res) => {
 
-    const {
-        name,
-        email,
-        password
-    } = req.body;
+    const { name, email, password } = req.body;
 
     try {
 
@@ -59,7 +55,7 @@ const processUserRegistrationForm = async (req, res) => {
             error
         );
 
-        // Duplicate email check
+        // Duplicate email
         if (error.code === '23505') {
 
             req.flash(
@@ -72,7 +68,7 @@ const processUserRegistrationForm = async (req, res) => {
 
         req.flash(
             'error',
-            'Registration failed. Please try again.'
+            'Registration failed.'
         );
 
         return res.redirect('/register');
@@ -96,17 +92,9 @@ const showLoginForm = (req, res) => {
 
 const processLoginForm = async (req, res) => {
 
-    const {
-        email,
-        password
-    } = req.body;
+    const { email, password } = req.body;
 
     try {
-
-        console.log(
-            'Login attempt:',
-            email
-        );
 
         const user = await authenticateUser(
             email,
@@ -124,7 +112,7 @@ const processLoginForm = async (req, res) => {
             return res.redirect('/login');
         }
 
-        // Save user in session
+        // Save session
         req.session.user = {
             id: user.user_id,
             name: user.name,
@@ -132,7 +120,6 @@ const processLoginForm = async (req, res) => {
             role: user.role
         };
 
-        // Explicitly save session
         req.session.save((error) => {
 
             if (error) {
@@ -155,24 +142,19 @@ const processLoginForm = async (req, res) => {
                 'Login successful!'
             );
 
-            console.log(
-                'User logged in:',
-                req.session.user
-            );
-
             return res.redirect('/dashboard');
         });
 
     } catch (error) {
 
         console.error(
-            'Error during login:',
+            'Login error:',
             error
         );
 
         req.flash(
             'error',
-            'Login failed. Please try again.'
+            'Login failed.'
         );
 
         return res.redirect('/login');
@@ -190,7 +172,7 @@ const processLogout = (req, res) => {
         if (error) {
 
             console.error(
-                'Error during logout:',
+                'Logout error:',
                 error
             );
 
@@ -202,7 +184,7 @@ const processLogout = (req, res) => {
             return res.redirect('/');
         }
 
-        res.redirect('/login');
+        return res.redirect('/login');
     });
 };
 
@@ -212,11 +194,6 @@ const processLogout = (req, res) => {
 
 const requireLogin = (req, res, next) => {
 
-    console.log(
-        'Session in requireLogin:',
-        req.session
-    );
-
     if (
         !req.session ||
         !req.session.user
@@ -224,7 +201,7 @@ const requireLogin = (req, res, next) => {
 
         req.flash(
             'error',
-            'You must be logged in to access that page.'
+            'You must log in first.'
         );
 
         return res.redirect('/login');
@@ -289,7 +266,7 @@ const showDashboard = (req, res) => {
 };
 
 /* =========================
-   USERS LIST (ADMIN)
+   USERS PAGE
 ========================= */
 
 const showUsersPage = async (req, res, next) => {
@@ -305,26 +282,10 @@ const showUsersPage = async (req, res, next) => {
 
     } catch (error) {
 
-        next(error);
-    }
-};
-
-/* =========================
-   USERS LIST (ADMIN)
-========================= */
-
-const showUsersPage = async (req, res, next) => {
-
-    try {
-
-        const users = await getAllUsers();
-
-        res.render('users', {
-            title: 'Registered Users',
-            users
-        });
-
-    } catch (error) {
+        console.error(
+            'Users page error:',
+            error
+        );
 
         next(error);
     }
