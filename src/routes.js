@@ -1,7 +1,7 @@
 import express from 'express';
-
+ 
 import { showHomePage } from './controllers/index.js';
-
+ 
 import {
     showOrganizationsPage,
     showOrganizationDetails,
@@ -12,7 +12,7 @@ import {
     organizationValidation,
     organizationIdValidation
 } from './controllers/organizations.js';
-
+ 
 import {
     showProjectsPage,
     showProjectDetails,
@@ -23,7 +23,7 @@ import {
     projectValidation,
     projectIdValidation
 } from './controllers/projects.js';
-
+ 
 import {
     showCategoriesPage,
     showCategoryDetails,
@@ -37,7 +37,7 @@ import {
     categoryIdValidation,
     assignCategoriesValidation
 } from './controllers/categories.js';
-
+ 
 import {
     showUserRegistrationForm,
     processUserRegistrationForm,
@@ -49,40 +49,40 @@ import {
     showDashboard,
     showUsersPage
 } from './controllers/users.js';
-
+ 
 import { testErrorPage } from './controllers/errors.js';
-
+ 
 const router = express.Router();
-
+ 
 /* =========================
    HOME
 ========================= */
-
+ 
 router.get('/', showHomePage);
-
+ 
 /* =========================
    ORGANIZATIONS
 ========================= */
-
+ 
 // List all organizations
 router.get(
     '/organizations',
     showOrganizationsPage
 );
-
+ 
 // View single organization
 router.get(
     '/organization/:id',
     showOrganizationDetails
 );
-
+ 
 // Show new organization form
 router.get(
     '/new-organization',
     requireRole('admin'),
     showNewOrganizationForm
 );
-
+ 
 // Process new organization form
 router.post(
     '/new-organization',
@@ -90,7 +90,7 @@ router.post(
     organizationValidation,
     processNewOrganizationForm
 );
-
+ 
 // Show edit organization form
 router.get(
     '/edit-organization/:id',
@@ -98,7 +98,7 @@ router.get(
     organizationIdValidation,
     showEditOrganizationForm
 );
-
+ 
 // Process edit organization form
 router.post(
     '/edit-organization/:id',
@@ -107,30 +107,30 @@ router.post(
     organizationValidation,
     processEditOrganizationForm
 );
-
+ 
 /* =========================
    PROJECTS
 ========================= */
-
+ 
 // List all projects
 router.get(
     '/projects',
     showProjectsPage
 );
-
+ 
 // View single project
 router.get(
     '/project/:id',
     showProjectDetails
 );
-
+ 
 // Show new project form
 router.get(
     '/new-project',
     requireRole('admin'),
     showNewProjectForm
 );
-
+ 
 // Process new project form
 router.post(
     '/new-project',
@@ -138,7 +138,7 @@ router.post(
     projectValidation,
     processNewProjectForm
 );
-
+ 
 // Show edit project form
 router.get(
     '/edit-project/:id',
@@ -146,7 +146,7 @@ router.get(
     projectIdValidation,
     showEditProjectForm
 );
-
+ 
 // Process edit project form
 router.post(
     '/edit-project/:id',
@@ -155,30 +155,30 @@ router.post(
     projectValidation,
     processEditProjectForm
 );
-
+ 
 /* =========================
    CATEGORIES
 ========================= */
-
+ 
 // List all categories
 router.get(
     '/categories',
     showCategoriesPage
 );
-
+ 
 // View single category
 router.get(
     '/category/:id',
     showCategoryDetails
 );
-
+ 
 // Show new category form
 router.get(
     '/new-category',
     requireRole('admin'),
     showNewCategoryForm
 );
-
+ 
 // Process new category form
 router.post(
     '/new-category',
@@ -186,7 +186,7 @@ router.post(
     categoryValidation,
     processNewCategoryForm
 );
-
+ 
 // Show edit category form
 router.get(
     '/edit-category/:id',
@@ -194,7 +194,7 @@ router.get(
     categoryIdValidation,
     showEditCategoryForm
 );
-
+ 
 // Process edit category form
 router.post(
     '/edit-category/:id',
@@ -203,7 +203,7 @@ router.post(
     categoryValidation,
     processEditCategoryForm
 );
-
+ 
 // Show assign categories form
 router.get(
     '/assign-categories/:projectId',
@@ -211,7 +211,7 @@ router.get(
     assignCategoriesValidation,
     showAssignCategoriesForm
 );
-
+ 
 // Process assign categories form
 router.post(
     '/assign-categories/:projectId',
@@ -219,39 +219,39 @@ router.post(
     assignCategoriesValidation,
     processAssignCategoriesForm
 );
-
+ 
 /* =========================
    USERS
 ========================= */
-
+ 
 // Registration
 router.get(
     '/register',
     showUserRegistrationForm
 );
-
+ 
 router.post(
     '/register',
     processUserRegistrationForm
 );
-
+ 
 // Login
 router.get(
     '/login',
     showLoginForm
 );
-
+ 
 router.post(
     '/login',
     processLoginForm
 );
-
+ 
 // Logout
 router.get(
     '/logout',
     processLogout
 );
-
+ 
 // Dashboard
 router.get(
     '/dashboard',
@@ -259,20 +259,13 @@ router.get(
     showDashboard
 );
 
-// Users list (admin only)
-router.get(
-    '/users',
-    requireRole('admin'),
-    showUsersPage
-);
-
 /* =========================
    ERROR TESTING
 ========================= */
-
+ 
 router.get(
     '/test-error',
     testErrorPage
 );
-
+ 
 export default router;

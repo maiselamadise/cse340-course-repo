@@ -4,7 +4,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+ 
 /* BODY */
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -12,9 +12,9 @@ body {
     background-color: #f5f7fa;
     color: #222;
 }
-
+ 
 /* public/css/style.css */
-
+ 
 body {
   font-family: Arial, sans-serif;
   max-width: 900px;
@@ -22,35 +22,35 @@ body {
   padding: 20px;
   line-height: 1.6;
 }
-
+ 
 h1,
 h2,
 h3 {
   color: #222;
 }
-
+ 
 ul {
   list-style: none;
   padding: 0;
 }
-
+ 
 li {
   margin-bottom: 10px;
 }
-
+ 
 a {
   color: #2563eb;
   text-decoration: none;
 }
-
+ 
 a:hover {
   text-decoration: underline;
 }
-
+ 
 .category-tags {
   margin-top: 10px;
 }
-
+ 
 .tag {
   display: inline-block;
   background: #e5e7eb;
@@ -59,13 +59,13 @@ a:hover {
   margin-right: 8px;
   margin-bottom: 8px;
 }
-
+ 
 /* NAVIGATION */
 nav {
     background-color: #003366;
     padding: 1rem 2rem;
 }
-
+ 
 nav ul {
     display: flex;
     justify-content: center;
@@ -73,18 +73,18 @@ nav ul {
     list-style: none;
     flex-wrap: wrap;
 }
-
+ 
 nav a {
     color: white;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease;
 }
-
+ 
 nav a:hover {
     color: #ffcc00;
 }
-
+ 
 /* MAIN CONTENT */
 main {
     width: 90%;
@@ -92,19 +92,19 @@ main {
     margin: auto;
     padding: 2rem 0;
 }
-
+ 
 /* HEADINGS */
 h1 {
     color: #003366;
     margin-bottom: 1rem;
     text-align: center;
 }
-
+ 
 h2 {
     margin-bottom: 1rem;
     color: #00509e;
 }
-
+ 
 /* SECTIONS */
 section {
     background-color: white;
@@ -113,7 +113,7 @@ section {
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-
+ 
 /* IMAGES */
 img {
     max-width: 250px;
@@ -122,16 +122,16 @@ img {
     margin: 1rem auto;
     border-radius: 8px;
 }
-
+ 
 /* LISTS */
 ul {
     padding-left: 1.5rem;
 }
-
+ 
 li {
     margin-bottom: 0.75rem;
 }
-
+ 
 /* FOOTER */
 footer {
     background-color: #003366;
@@ -140,7 +140,7 @@ footer {
     padding: 1rem;
     margin-top: 2rem;
 }
-
+ 
 /* Category tags on project details */
 .category-tags {
     display: flex;
@@ -148,7 +148,7 @@ footer {
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
-
+ 
 .category-tag {
     display: inline-block;
     padding: 0.35rem 0.75rem;
@@ -158,40 +158,9 @@ footer {
     color: #212529;
     font-size: 0.9rem;
 }
-
+ 
 .category-tag:hover {
     background-color: #dee2e6;
-}
-
-/* TABLES */
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.data-table th,
-.data-table td {
-    padding: 0.85rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.data-table thead th {
-    background-color: #003366;
-    color: white;
-    font-weight: bold;
-}
-
-.data-table tbody tr:nth-child(even) {
-    background-color: #f5f7fa;
-}
-
-.data-table tbody tr:hover {
-    background-color: #eaf1f8;
 }
 
 /* Flash message styles */
@@ -221,19 +190,19 @@ footer {
     background-color: #d1ecf1;
     border-color: #bee5eb;
 }
-
+ 
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
-
+ 
     nav ul {
         flex-direction: column;
         align-items: center;
     }
-
+ 
     img {
         max-width: 100%;
     }
-
+ 
     h1 {
         font-size: 1.8rem;
     }
