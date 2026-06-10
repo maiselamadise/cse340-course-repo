@@ -146,3 +146,6 @@ vite.config.ts.timestamp-*
 
 # Local GitHub CLI download (not part of the app)
 .gh-cli/
+
+# macOS
+.DS_Store
