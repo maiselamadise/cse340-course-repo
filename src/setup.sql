@@ -193,8 +193,11 @@ VALUES
 );
 
 -- ==========================================
--- INSERT TEST USER
+-- INSERT TEST USERS
 -- ==========================================
+-- Passwords (bcrypt hashed):
+--   test@example.com  -> User123!   (role: user)
+--   admin@example.com -> Admin123!  (role: admin)
 INSERT INTO users (
     name,
     email,
@@ -203,10 +206,16 @@ INSERT INTO users (
 )
 VALUES
 (
-    'testuser',
+    'Test User',
     'test@example.com',
-    'placeholder_hash',
-    1
+    '$2b$10$5jFm042K8s1P6CJvHYqBW.cidWBrJp7/U.ZW5oeY0RUfvBBEDgtga',
+    (SELECT role_id FROM roles WHERE role_name = 'user')
+),
+(
+    'Site Admin',
+    'admin@example.com',
+    '$2b$10$bup/Fz1yTkbD2m68CJc2G.DQHs.CGDywixU3dUXF8DzJQgXjllw3W',
+    (SELECT role_id FROM roles WHERE role_name = 'admin')
 );
 
 -- ==========================================

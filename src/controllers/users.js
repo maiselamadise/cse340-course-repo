@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import {
     createUser,
-    authenticateUser
+    authenticateUser,
+    getAllUsers
 } from '../models/users.js';
 
 /* =========================
@@ -109,7 +110,7 @@ const processLoginForm = async (req, res) => {
 
         // Save user in session
         req.session.user = {
-            id: user.id,
+            id: user.user_id,
             name: user.name,
             email: user.email,
             role: user.role
@@ -248,6 +249,27 @@ const showDashboard = (req, res) => {
 };
 
 /* =========================
+   USERS LIST (ADMIN)
+========================= */
+
+const showUsersPage = async (req, res, next) => {
+
+    try {
+
+        const users = await getAllUsers();
+
+        res.render('users', {
+            title: 'Registered Users',
+            users
+        });
+
+    } catch (error) {
+
+        next(error);
+    }
+};
+
+/* =========================
    EXPORTS
 ========================= */
 
@@ -259,5 +281,6 @@ export {
     processLogout,
     requireLogin,
     requireRole,
-    showDashboard
+    showDashboard,
+    showUsersPage
 };
