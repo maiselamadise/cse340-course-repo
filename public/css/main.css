@@ -163,6 +163,37 @@ footer {
     background-color: #dee2e6;
 }
 
+/* TABLES */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table thead th {
+    background-color: #003366;
+    color: white;
+    font-weight: bold;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: #f5f7fa;
+}
+
+.data-table tbody tr:hover {
+    background-color: #eaf1f8;
+}
+
 /* Flash message styles */
 .alert {
     padding: 15px;
