@@ -1,12 +1,45 @@
 <%- include('partials/header') %>
 
-<main>
-    <h1><%= title %></h1>
+<h1><%= title %></h1>
 
-    <h2>Dashboard</h2>
+<section>
+    <h2>Account Information</h2>
+    <table class="info-table">
+        <tr>
+            <th>Name</th>
+            <td><%= name %></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><%= email %></td>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <td><span class="role-badge role-<%= role %>"><%= role %></span></td>
+        </tr>
+    </table>
+</section>
 
-    <p>Name: <%= name %></p>
-    <p>Email: <%= email %></p>
-</main>
+<% if (role === 'admin') { %>
+<section>
+    <h2>Admin Controls</h2>
+    <ul class="admin-links">
+        <li><a href="/users" class="btn">Manage Users</a></li>
+        <li><a href="/new-organization" class="btn">Add Organization</a></li>
+        <li><a href="/new-project" class="btn">Add Project</a></li>
+        <li><a href="/new-category" class="btn">Add Category</a></li>
+    </ul>
+</section>
+<% } %>
+
+<section>
+    <h2>Quick Links</h2>
+    <ul>
+        <li><a href="/organizations">Browse Organizations</a></li>
+        <li><a href="/projects">Browse Projects</a></li>
+        <li><a href="/categories">Browse Categories</a></li>
+        <li><a href="/logout">Log Out</a></li>
+    </ul>
+</section>
 
 <%- include('partials/footer') %>

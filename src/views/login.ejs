@@ -1,33 +1,37 @@
 <%- include('partials/header') %>
 
-<main>
+<div class="form-container">
     <h1><%= title %></h1>
 
-    <form action="/login" method="POST">
+    <form action="/login" method="POST" class="auth-form">
         <div class="form-group">
-            <label for="email">Email</label>
-
+            <label for="email">Email Address</label>
             <input
                 type="email"
                 id="email"
                 name="email"
+                placeholder="you@example.com"
                 required
             >
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-
             <input
                 type="password"
                 id="password"
                 name="password"
+                placeholder="Enter your password"
                 required
             >
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
-</main>
+
+    <p class="form-footer">
+        Don't have an account? <a href="/register">Register here</a>
+    </p>
+</div>
 
 <%- include('partials/footer') %>

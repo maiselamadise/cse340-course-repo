@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import {
     createUser,
     authenticateUser,
@@ -26,7 +26,6 @@ const processUserRegistrationForm = async (req, res) => {
 
     try {
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
 
         const passwordHash = await bcrypt.hash(
@@ -34,7 +33,6 @@ const processUserRegistrationForm = async (req, res) => {
             salt
         );
 
-        // Create user
         await createUser(
             name,
             email,
@@ -55,12 +53,11 @@ const processUserRegistrationForm = async (req, res) => {
             error
         );
 
-        // Duplicate email
         if (error.code === '23505') {
 
             req.flash(
                 'error',
-                'Email already exists.'
+                'That email address is already registered.'
             );
 
             return res.redirect('/register');
@@ -68,7 +65,7 @@ const processUserRegistrationForm = async (req, res) => {
 
         req.flash(
             'error',
-            'Registration failed.'
+            'Registration failed. Please try again.'
         );
 
         return res.redirect('/register');
@@ -101,7 +98,6 @@ const processLoginForm = async (req, res) => {
             password
         );
 
-        // Invalid login
         if (!user) {
 
             req.flash(
@@ -112,7 +108,6 @@ const processLoginForm = async (req, res) => {
             return res.redirect('/login');
         }
 
-        // Save session
         req.session.user = {
             id: user.user_id,
             name: user.name,
@@ -131,7 +126,7 @@ const processLoginForm = async (req, res) => {
 
                 req.flash(
                     'error',
-                    'Login failed.'
+                    'Login failed. Please try again.'
                 );
 
                 return res.redirect('/login');
@@ -139,7 +134,7 @@ const processLoginForm = async (req, res) => {
 
             req.flash(
                 'success',
-                'Login successful!'
+                `Welcome back, ${user.name}!`
             );
 
             return res.redirect('/dashboard');
@@ -154,7 +149,7 @@ const processLoginForm = async (req, res) => {
 
         req.flash(
             'error',
-            'Login failed.'
+            'Login failed. Please try again.'
         );
 
         return res.redirect('/login');
@@ -174,11 +169,6 @@ const processLogout = (req, res) => {
             console.error(
                 'Logout error:',
                 error
-            );
-
-            req.flash(
-                'error',
-                'Logout failed.'
             );
 
             return res.redirect('/');
@@ -201,7 +191,7 @@ const requireLogin = (req, res, next) => {
 
         req.flash(
             'error',
-            'You must log in first.'
+            'You must be logged in to access that page.'
         );
 
         return res.redirect('/login');
@@ -218,7 +208,6 @@ const requireRole = (role) => {
 
     return (req, res, next) => {
 
-        // Must be logged in
         if (
             !req.session ||
             !req.session.user
@@ -232,14 +221,13 @@ const requireRole = (role) => {
             return res.redirect('/login');
         }
 
-        // Check role
         if (
             req.session.user.role !== role
         ) {
 
             req.flash(
                 'error',
-                'Access denied.'
+                'Access denied. Admin privileges required.'
             );
 
             return res.redirect('/dashboard');
@@ -266,7 +254,7 @@ const showDashboard = (req, res) => {
 };
 
 /* =========================
-   USERS PAGE
+   USERS PAGE (ADMIN)
 ========================= */
 
 const showUsersPage = async (req, res, next) => {

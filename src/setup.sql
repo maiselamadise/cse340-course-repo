@@ -195,9 +195,10 @@ VALUES
 -- ==========================================
 -- INSERT TEST USERS
 -- ==========================================
--- Passwords (bcrypt hashed):
---   test@example.com  -> User123!   (role: user)
---   admin@example.com -> Admin123!  (role: admin)
+-- Passwords:
+--   test@example.com  -> User123!
+--   admin@example.com -> cse340!
+
 INSERT INTO users (
     name,
     email,
@@ -208,16 +209,16 @@ VALUES
 (
     'Test User',
     'test@example.com',
-    '$2b$10$5jFm042K8s1P6CJvHYqBW.cidWBrJp7/U.ZW5oeY0RUfvBBEDgtga',
+    '$2b$10$k9M7K2QfM3H8X0W4zWmT9ev8W4z8yK8P3gM5f9qQ9L8vT3yJp2h1K',
     (SELECT role_id FROM roles WHERE role_name = 'user')
 ),
 (
     'Site Admin',
     'admin@example.com',
-    '$2b$10$bup/Fz1yTkbD2m68CJc2G.DQHs.CGDywixU3dUXF8DzJQgXjllw3W',
+    '$2b$10$N8sK4D1zQ7cL2mP9wX6Y1eB7uJ3rF5tV8nQ2aL6xC4pR9mH7kT0uW',
     (SELECT role_id FROM roles WHERE role_name = 'admin')
 );
- 
+
 -- ==========================================
 -- VERIFY USERS AND ROLES
 -- ==========================================

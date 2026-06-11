@@ -1,33 +1,43 @@
 <%- include('partials/header') %>
 
-<main>
-    <h1>Organizations</h1>
+<h1>Organizations</h1>
 
-    <ul>
-<% organizations.forEach(organization => { %>
-    <li>
+<% if (isAdmin) { %>
+    <p><a href="/new-organization" class="btn">+ Add New Organization</a></p>
+<% } %>
 
-        <% if (organization.logo_filename) { %>
-            <img
-                src="/images/<%= organization.logo_filename %>"
-                alt="<%= organization.name %> logo"
-                width="120"
-            >
-        <% } %>
+<section>
+    <% if (organizations.length === 0) { %>
+        <p>No organizations found.</p>
+    <% } else { %>
+        <ul class="card-list">
+            <% organizations.forEach(organization => { %>
+                <li class="card">
+                    <% if (organization.logo_filename) { %>
+                        <img
+                            src="/images/<%= organization.logo_filename %>"
+                            alt="<%= organization.name %> logo"
+                            class="org-logo"
+                        >
+                    <% } %>
 
-        <a href="/organization/<%= organization.organization_id %>">
-            <%= organization.name %>
-        </a>
+                    <div class="card-body">
+                        <h2>
+                            <a href="/organization/<%= organization.organization_id %>">
+                                <%= organization.name %>
+                            </a>
+                        </h2>
 
-        <span class="actions">
-            [<a href="/edit-organization/<%= organization.organization_id %>">Edit</a>]
-        </span>
-
-    </li>
-<% }) %>
-    </ul>
-
-    <p><a href="/new-organization">Add a new organization</a></p>
-</main>
+                        <% if (isAdmin) { %>
+                            <p class="actions">
+                                <a href="/edit-organization/<%= organization.organization_id %>">Edit</a>
+                            </p>
+                        <% } %>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+</section>
 
 <%- include('partials/footer') %>

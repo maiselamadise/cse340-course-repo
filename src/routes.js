@@ -259,6 +259,14 @@ router.get(
     showDashboard
 );
 
+// Users list (admin only)
+router.get(
+    '/users',
+    requireLogin,
+    requireRole('admin'),
+    showUsersPage
+);
+
 /* =========================
    ERROR TESTING
 ========================= */

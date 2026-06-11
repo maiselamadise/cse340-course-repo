@@ -3,70 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
-    <title><%= title %></title>
- 
+    <title><%= title %> | Community Projects</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
- 
-<body>
- 
-<header>
- 
-    <nav>
- 
-        <a href="/">Home</a>
- 
-        <a href="/organizations">
-            Organizations
-        </a>
- 
-        <a href="/projects">
-            Projects
-        </a>
- 
-        <a href="/categories">
-            Categories
-        </a>
- 
-        <% if (user) { %>
- 
-            <a href="/dashboard">
-                Dashboard
-            </a>
- 
-            <a href="/logout">
-                Logout
-            </a>
- 
-        <% } else { %>
- 
-            <a href="/login">
-                Login
-            </a>
- 
-            <a href="/register">
-                Register
-            </a>
- 
-        <% } %>
- 
-        <% if (user && user.role === 'admin') { %>
 
-            <a href="/new-project">
-                New Project
-            </a>
- 
-            <a href="/new-organization">
-                New Organization
-            </a>
- 
-            <a href="/new-category">
-                New Category
-            </a>
- 
-        <% } %>
- 
+<body>
+
+<header>
+    <div class="site-brand">
+        <a href="/">
+            <img src="/images/placeholder-logo.png" alt="Community Projects logo" class="site-logo">
+            Community Projects Directory
+        </a>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/organizations">Organizations</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/categories">Categories</a></li>
+
+            <% if (isLoggedIn) { %>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <% if (isAdmin) { %>
+                    <li><a href="/users">Users</a></li>
+                    <li><a href="/new-organization">+ Organization</a></li>
+                    <li><a href="/new-project">+ Project</a></li>
+                    <li><a href="/new-category">+ Category</a></li>
+                <% } %>
+                <li><a href="/logout">Logout (<%= user.name %>)</a></li>
+            <% } else { %>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            <% } %>
+        </ul>
     </nav>
- 
 </header>
+
+<main>
+
+<%
+    const flashMessages = typeof flash === 'function' ? flash() : null;
+%>
+<% if (flashMessages) { %>
+    <% if (flashMessages.success && flashMessages.success.length > 0) { %>
+        <% flashMessages.success.forEach(msg => { %>
+            <div class="alert success"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (flashMessages.error && flashMessages.error.length > 0) { %>
+        <% flashMessages.error.forEach(msg => { %>
+            <div class="alert error"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (flashMessages.warning && flashMessages.warning.length > 0) { %>
+        <% flashMessages.warning.forEach(msg => { %>
+            <div class="alert warning"><%= msg %></div>
+        <% }) %>
+    <% } %>
+    <% if (flashMessages.info && flashMessages.info.length > 0) { %>
+        <% flashMessages.info.forEach(msg => { %>
+            <div class="alert info"><%= msg %></div>
+        <% }) %>
+    <% } %>
+<% } %>
