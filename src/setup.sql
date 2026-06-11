@@ -209,13 +209,13 @@ VALUES
 (
     'Test User',
     'test@example.com',
-    '$2b$10$k9M7K2QfM3H8X0W4zWmT9ev8W4z8yK8P3gM5f9qQ9L8vT3yJp2h1K',
+    '$2b$10$VNJl2eK.BBj6Oh5SnjaFOuGSBYynTsKquPEMJZZMTNDXJXnuD/y4y',
     (SELECT role_id FROM roles WHERE role_name = 'user')
 ),
 (
     'Site Admin',
     'admin@example.com',
-    '$2b$10$N8sK4D1zQ7cL2mP9wX6Y1eB7uJ3rF5tV8nQ2aL6xC4pR9mH7kT0uW',
+    '$2b$10$9FKE0.tPAgDuCOn51XS1hOO.x4w91A.phzbznNjFoVvm4fNpOm2/q',
     (SELECT role_id FROM roles WHERE role_name = 'admin')
 );
 
