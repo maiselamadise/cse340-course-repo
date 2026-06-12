@@ -45,6 +45,7 @@ app.use(express.json())
 /* =========================
    SESSION
 ========================= */
+app.set('trust proxy', 1)
 
 app.use(
     session({
