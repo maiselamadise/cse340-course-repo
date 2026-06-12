@@ -22,6 +22,31 @@
         <%= project.end_date %>
     </p>
 
+    <% if (isLoggedIn) { %>
+        <section class="volunteer-section">
+            <% if (isVolunteering) { %>
+                <p>You are volunteering for this project.</p>
+                <form
+                    action="/project/<%= project.project_id %>/unvolunteer"
+                    method="POST"
+                >
+                    <button type="submit" class="btn">
+                        Remove me as a volunteer
+                    </button>
+                </form>
+            <% } else { %>
+                <form
+                    action="/project/<%= project.project_id %>/volunteer"
+                    method="POST"
+                >
+                    <button type="submit" class="btn">
+                        Volunteer for this project
+                    </button>
+                </form>
+            <% } %>
+        </section>
+    <% } %>
+
     <h2>Categories</h2>
 
     <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>

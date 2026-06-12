@@ -13,6 +13,8 @@ import {
     getCategoriesByProjectId
 } from '../models/categories.js';
 
+import { isUserVolunteering } from '../models/volunteers.js';
+
 const projectValidation = [
     body('title')
         .trim()
@@ -69,10 +71,16 @@ export const showProjectDetails = async (req, res, next) => {
 
         const categories = await getCategoriesByProjectId(id);
 
+        let isVolunteering = false;
+        if (req.session.user) {
+            isVolunteering = await isUserVolunteering(req.session.user.id, id);
+        }
+
         res.render('projectDetails', {
             title: project.title,
             project,
-            categories
+            categories,
+            isVolunteering
         });
     } catch (err) {
         next(err);

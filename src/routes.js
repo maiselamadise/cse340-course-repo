@@ -50,6 +50,12 @@ import {
     showUsersPage
 } from './controllers/users.js';
  
+import {
+    processVolunteer,
+    processRemoveVolunteer,
+    volunteerIdValidation
+} from './controllers/volunteers.js';
+
 import { testErrorPage } from './controllers/errors.js';
  
 const router = express.Router();
@@ -156,6 +162,26 @@ router.post(
     processEditProjectForm
 );
  
+/* =========================
+   VOLUNTEERS
+========================= */
+
+// Volunteer for a project (logged-in users only)
+router.post(
+    '/project/:id/volunteer',
+    requireLogin,
+    volunteerIdValidation,
+    processVolunteer
+);
+
+// Remove self as a volunteer from a project (logged-in users only)
+router.post(
+    '/project/:id/unvolunteer',
+    requireLogin,
+    volunteerIdValidation,
+    processRemoveVolunteer
+);
+
 /* =========================
    CATEGORIES
 ========================= */

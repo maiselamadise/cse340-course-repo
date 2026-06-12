@@ -33,6 +33,34 @@
 <% } %>
 
 <section>
+    <h2>My Volunteer Projects</h2>
+    <% if (volunteerProjects.length === 0) { %>
+        <p>You have not volunteered for any projects yet.</p>
+        <p><a href="/projects">Browse projects to volunteer</a></p>
+    <% } else { %>
+        <ul class="volunteer-list">
+            <% volunteerProjects.forEach(project => { %>
+                <li>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+                    <span> &mdash; <%= project.organization_name %></span>
+                    <form
+                        action="/project/<%= project.project_id %>/unvolunteer"
+                        method="POST"
+                    >
+                        <input type="hidden" name="redirectTo" value="dashboard">
+                        <button type="submit" class="btn">
+                            Remove
+                        </button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+</section>
+
+<section>
     <h2>Quick Links</h2>
     <ul>
         <li><a href="/organizations">Browse Organizations</a></li>
