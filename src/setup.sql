@@ -1,6 +1,7 @@
 -- ==========================================
 -- DROP TABLES (IN REVERSE DEPENDENCY ORDER)
 -- ==========================================
+DROP TABLE IF EXISTS project_volunteers;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS project_categories;
@@ -86,6 +87,27 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
  
+-- ==========================================
+-- PROJECT VOLUNTEERS (JUNCTION TABLE)
+-- ==========================================
+CREATE TABLE project_volunteers (
+    user_id INT NOT NULL,
+    project_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (user_id, project_id),
+
+    CONSTRAINT fk_volunteer_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_volunteer_project
+        FOREIGN KEY (project_id)
+        REFERENCES projects(project_id)
+        ON DELETE CASCADE
+);
+
 -- ==========================================
 -- INSERT ORGANIZATIONS
 -- ==========================================

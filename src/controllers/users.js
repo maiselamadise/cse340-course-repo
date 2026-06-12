@@ -5,6 +5,8 @@ import {
     getAllUsers
 } from '../models/users.js';
 
+import { getVolunteerProjectsByUserId } from '../models/volunteers.js';
+
 /* =========================
    SHOW REGISTER PAGE
 ========================= */
@@ -241,16 +243,31 @@ const requireRole = (role) => {
    DASHBOARD
 ========================= */
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res, next) => {
 
     const user = req.session.user;
 
-    res.render('dashboard', {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email,
-        role: user.role
-    });
+    try {
+
+        const volunteerProjects = await getVolunteerProjectsByUserId(user.id);
+
+        res.render('dashboard', {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            volunteerProjects
+        });
+
+    } catch (error) {
+
+        console.error(
+            'Dashboard error:',
+            error
+        );
+
+        next(error);
+    }
 };
 
 /* =========================
