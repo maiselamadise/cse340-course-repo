@@ -9,7 +9,8 @@ import { getProjectById } from '../models/projects.js';
 
 export const volunteerIdValidation = [
     param('id')
-        .isInt().withMessage('Invalid project ID')
+        .isInt()
+        .withMessage('Invalid project ID')
 ];
 
 export const processVolunteer = async (req, res, next) => {
@@ -21,7 +22,7 @@ export const processVolunteer = async (req, res, next) => {
     }
 
     const { id } = req.params;
-    const userId = req.session.user.id;
+    const userId = req.session.user.user_id;
 
     try {
         const project = await getProjectById(id);
@@ -34,12 +35,21 @@ export const processVolunteer = async (req, res, next) => {
 
         await addVolunteer(userId, id);
 
-        req.flash('success', `You are now volunteering for "${project.title}".`);
-        res.redirect(`/project/${id}`);
+        req.flash(
+            'success',
+            `You are now volunteering for "${project.title}".`
+        );
+
+        res.redirect(`/projects/${id}`);
     } catch (error) {
         console.error('Error adding volunteer:', error);
-        req.flash('error', 'There was an error signing you up to volunteer.');
-        res.redirect(`/project/${id}`);
+
+        req.flash(
+            'error',
+            'There was an error signing you up to volunteer.'
+        );
+
+        res.redirect(`/projects/${id}`);
     }
 };
 
@@ -52,19 +62,30 @@ export const processRemoveVolunteer = async (req, res, next) => {
     }
 
     const { id } = req.params;
-    const userId = req.session.user.id;
-    const redirectTo = req.body.redirectTo === 'dashboard'
-        ? '/dashboard'
-        : `/project/${id}`;
+    const userId = req.session.user.user_id;
+
+    const redirectTo =
+        req.body.redirectTo === 'dashboard'
+            ? '/dashboard'
+            : `/projects/${id}`;
 
     try {
         await removeVolunteer(userId, id);
 
-        req.flash('success', 'You have been removed as a volunteer for this project.');
+        req.flash(
+            'success',
+            'You have been removed as a volunteer for this project.'
+        );
+
         res.redirect(redirectTo);
     } catch (error) {
         console.error('Error removing volunteer:', error);
-        req.flash('error', 'There was an error removing you as a volunteer.');
+
+        req.flash(
+            'error',
+            'There was an error removing you as a volunteer.'
+        );
+
         res.redirect(redirectTo);
     }
 };
