@@ -4,7 +4,7 @@ import {
     volunteerIdValidation,
     processVolunteer,
     processRemoveVolunteer
-} from '../controllers/volunteerController.js';
+} from '../controllers/volunteers.js';
 
 import { requireLogin } from '../middleware/authMiddleware.js';
 
