@@ -1,63 +1,35 @@
 import pool from './db.js';
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> 327a3cf (commit)
 export const addVolunteer = async (userId, projectId) => {
     const query = `
         INSERT INTO project_volunteers (user_id, project_id)
         VALUES ($1, $2)
         ON CONFLICT (user_id, project_id) DO NOTHING;
     `;
-<<<<<<< HEAD
 
     await pool.query(query, [userId, projectId]);
 };
 
-=======
- 
-    await pool.query(query, [userId, projectId]);
-};
- 
->>>>>>> 327a3cf (commit)
 export const removeVolunteer = async (userId, projectId) => {
     const query = `
         DELETE FROM project_volunteers
         WHERE user_id = $1 AND project_id = $2;
     `;
-<<<<<<< HEAD
 
     await pool.query(query, [userId, projectId]);
 };
 
-=======
- 
-    await pool.query(query, [userId, projectId]);
-};
- 
->>>>>>> 327a3cf (commit)
 export const isUserVolunteering = async (userId, projectId) => {
     const query = `
         SELECT 1
         FROM project_volunteers
         WHERE user_id = $1 AND project_id = $2;
     `;
-<<<<<<< HEAD
 
     const result = await pool.query(query, [userId, projectId]);
 
     return result.rows.length > 0;
 };
 
-=======
- 
-    const result = await pool.query(query, [userId, projectId]);
- 
-    return result.rows.length > 0;
-};
- 
->>>>>>> 327a3cf (commit)
 export const getVolunteerProjectsByUserId = async (userId) => {
     const query = `
         SELECT
@@ -76,16 +48,8 @@ export const getVolunteerProjectsByUserId = async (userId) => {
         WHERE pv.user_id = $1
         ORDER BY p.start_date;
     `;
-<<<<<<< HEAD
 
     const result = await pool.query(query, [userId]);
 
     return result.rows;
 };
-=======
- 
-    const result = await pool.query(query, [userId]);
- 
-    return result.rows;
-};
->>>>>>> 327a3cf (commit)
