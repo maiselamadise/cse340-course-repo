@@ -165,7 +165,6 @@ router.post(
 /* =========================
    VOLUNTEERS
 ========================= */
-
 // Volunteer for a project (logged-in users only)
 router.post(
     '/project/:id/volunteer',
@@ -173,7 +172,6 @@ router.post(
     volunteerIdValidation,
     processVolunteer
 );
-
 // Remove self as a volunteer from a project (logged-in users only)
 router.post(
     '/project/:id/unvolunteer',
@@ -181,7 +179,6 @@ router.post(
     volunteerIdValidation,
     processRemoveVolunteer
 );
-
 /* =========================
    CATEGORIES
 ========================= */
@@ -284,7 +281,7 @@ router.get(
     requireLogin,
     showDashboard
 );
-
+ 
 // Users list (admin only)
 router.get(
     '/users',
@@ -292,7 +289,7 @@ router.get(
     requireRole('admin'),
     showUsersPage
 );
-
+ 
 /* =========================
    ERROR TESTING
 ========================= */

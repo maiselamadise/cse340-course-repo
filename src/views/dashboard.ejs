@@ -1,7 +1,7 @@
 <%- include('partials/header') %>
-
+ 
 <h1><%= title %></h1>
-
+ 
 <section>
     <h2>Account Information</h2>
     <table class="info-table">
@@ -19,7 +19,7 @@
         </tr>
     </table>
 </section>
-
+ 
 <% if (role === 'admin') { %>
 <section>
     <h2>Admin Controls</h2>
@@ -31,7 +31,35 @@
     </ul>
 </section>
 <% } %>
-
+ 
+<section>
+    <h2>My Volunteer Projects</h2>
+    <% if (volunteerProjects.length === 0) { %>
+        <p>You have not volunteered for any projects yet.</p>
+        <p><a href="/projects">Browse projects to volunteer</a></p>
+    <% } else { %>
+        <ul class="volunteer-list">
+            <% volunteerProjects.forEach(project => { %>
+                <li>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+                    <span> &mdash; <%= project.organization_name %></span>
+                    <form
+                        action="/project/<%= project.project_id %>/unvolunteer"
+                        method="POST"
+                    >
+                        <input type="hidden" name="redirectTo" value="dashboard">
+                        <button type="submit" class="btn">
+                            Remove
+                        </button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+    <% } %>
+</section>
+ 
 <section>
     <h2>My Volunteer Projects</h2>
     <% if (volunteerProjects.length === 0) { %>
@@ -69,5 +97,5 @@
         <li><a href="/logout">Log Out</a></li>
     </ul>
 </section>
-
+ 
 <%- include('partials/footer') %>

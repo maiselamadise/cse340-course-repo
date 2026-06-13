@@ -1,14 +1,14 @@
 import { body, param, validationResult } from 'express-validator';
-
+ 
 import {
     getUpcomingProjects,
     getProjectById,
     createProject,
     updateProject
 } from '../models/projects.js';
-
+ 
 import { getAllOrganizations } from '../models/organizations.js';
-
+ 
 import {
     getCategoriesByProjectId
 } from '../models/categories.js';
@@ -38,16 +38,16 @@ const projectValidation = [
         .notEmpty().withMessage('Organization is required')
         .isInt().withMessage('Organization must be a valid integer')
 ];
-
+ 
 const projectIdValidation = [
     param('id')
         .isInt().withMessage('Invalid project ID')
 ];
-
+ 
 export const showProjectsPage = async (req, res, next) => {
     try {
         const projects = await getUpcomingProjects();
-
+ 
         res.render('projects', {
             title: 'Projects',
             projects
@@ -56,26 +56,24 @@ export const showProjectsPage = async (req, res, next) => {
         next(err);
     }
 };
-
+ 
 export const showProjectDetails = async (req, res, next) => {
     try {
         const { id } = req.params;
-
+ 
         const project = await getProjectById(id);
-
+ 
         if (!project) {
             const err = new Error('Project not found');
             err.status = 404;
             return next(err);
         }
-
+ 
         const categories = await getCategoriesByProjectId(id);
-
         let isVolunteering = false;
         if (req.session.user) {
             isVolunteering = await isUserVolunteering(req.session.user.id, id);
         }
-
         res.render('projectDetails', {
             title: project.title,
             project,
@@ -86,34 +84,34 @@ export const showProjectDetails = async (req, res, next) => {
         next(err);
     }
 };
-
+ 
 export const showNewProjectForm = async (req, res, next) => {
     try {
         const organizations = await getAllOrganizations();
         const title = 'Add New Service Project';
-
+ 
         res.render('new-project', { title, organizations });
     } catch (err) {
         next(err);
     }
 };
-
+ 
 export const processNewProjectForm = async (req, res, next) => {
     const errors = validationResult(req);
-
+ 
     if (!errors.isEmpty()) {
         errors.array().forEach((error) => {
             req.flash('error', error.msg);
         });
-
+ 
         return res.redirect('/new-project');
     }
-
+ 
     const { title, description, location, startDate, endDate, organizationId } = req.body;
-
+ 
     try {
         await createProject(title, description, location, startDate, endDate, organizationId);
-
+ 
         req.flash('success', 'New service project created successfully!');
         res.redirect('/projects');
     } catch (error) {
@@ -122,54 +120,54 @@ export const processNewProjectForm = async (req, res, next) => {
         res.redirect('/new-project');
     }
 };
-
+ 
 export const showEditProjectForm = async (req, res, next) => {
     const errors = validationResult(req);
-
+ 
     if (!errors.isEmpty()) {
         errors.array().forEach((error) => {
             req.flash('error', error.msg);
         });
-
+ 
         return res.redirect('/projects');
     }
-
+ 
     try {
         const { id } = req.params;
         const project = await getProjectById(id);
-
+ 
         if (!project) {
             const err = new Error('Project not found');
             err.status = 404;
             return next(err);
         }
-
+ 
         const organizations = await getAllOrganizations();
         const title = 'Edit Service Project';
-
+ 
         res.render('edit-project', { title, project, organizations });
     } catch (err) {
         next(err);
     }
 };
-
+ 
 export const processEditProjectForm = async (req, res, next) => {
     const errors = validationResult(req);
-
+ 
     if (!errors.isEmpty()) {
         errors.array().forEach((error) => {
             req.flash('error', error.msg);
         });
-
+ 
         return res.redirect(`/edit-project/${req.params.id}`);
     }
-
+ 
     const { title, description, location, startDate, endDate, organizationId } = req.body;
     const { id } = req.params;
-
+ 
     try {
         await updateProject(id, title, description, location, startDate, endDate, organizationId);
-
+ 
         req.flash('success', 'Service project updated successfully!');
         res.redirect(`/project/${id}`);
     } catch (error) {
@@ -178,5 +176,5 @@ export const processEditProjectForm = async (req, res, next) => {
         res.redirect(`/edit-project/${id}`);
     }
 };
-
+ 
 export { projectValidation, projectIdValidation };

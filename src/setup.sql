@@ -101,13 +101,11 @@ CREATE TABLE project_volunteers (
         FOREIGN KEY (user_id)
         REFERENCES users(user_id)
         ON DELETE CASCADE,
-
     CONSTRAINT fk_volunteer_project
         FOREIGN KEY (project_id)
         REFERENCES projects(project_id)
         ON DELETE CASCADE
 );
-
 -- ==========================================
 -- INSERT ORGANIZATIONS
 -- ==========================================
@@ -220,7 +218,7 @@ VALUES
 -- Passwords:
 --   test@example.com  -> User123!
 --   admin@example.com -> cse340!
-
+ 
 INSERT INTO users (
     name,
     email,
@@ -240,7 +238,7 @@ VALUES
     '$2b$10$9FKE0.tPAgDuCOn51XS1hOO.x4w91A.phzbznNjFoVvm4fNpOm2/q',
     (SELECT role_id FROM roles WHERE role_name = 'admin')
 );
-
+ 
 -- ==========================================
 -- VERIFY USERS AND ROLES
 -- ==========================================
