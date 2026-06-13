@@ -2,7 +2,8 @@ import { param, validationResult } from 'express-validator';
 
 import {
     addVolunteer,
-    removeVolunteer
+    removeVolunteer,
+    isUserVolunteering
 } from '../models/volunteers.js';
 
 import { getProjectById } from '../models/projects.js';
@@ -22,6 +23,7 @@ export const processVolunteer = async (req, res, next) => {
     }
 
     const { id } = req.params;
+
     const userId = req.session.user.user_id;
 
     try {
@@ -30,19 +32,39 @@ export const processVolunteer = async (req, res, next) => {
         if (!project) {
             const err = new Error('Project not found');
             err.status = 404;
+
             return next(err);
         }
 
-        await addVolunteer(userId, id);
+        const alreadyVolunteering =
+            await isUserVolunteering(
+                userId,
+                id
+            );
 
-        req.flash(
-            'success',
-            `You are now volunteering for "${project.title}".`
-        );
+        if (!alreadyVolunteering) {
+            await addVolunteer(
+                userId,
+                id
+            );
+
+            req.flash(
+                'success',
+                `You are now volunteering for "${project.title}".`
+            );
+        } else {
+            req.flash(
+                'info',
+                'You are already volunteering for this project.'
+            );
+        }
 
         res.redirect(`/projects/${id}`);
     } catch (error) {
-        console.error('Error adding volunteer:', error);
+        console.error(
+            'Error adding volunteer:',
+            error
+        );
 
         req.flash(
             'error',
@@ -53,15 +75,21 @@ export const processVolunteer = async (req, res, next) => {
     }
 };
 
-export const processRemoveVolunteer = async (req, res, next) => {
+export const processRemoveVolunteer = async (
+    req,
+    res,
+    next
+) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
         req.flash('error', 'Invalid project.');
+
         return res.redirect('/dashboard');
     }
 
     const { id } = req.params;
+
     const userId = req.session.user.user_id;
 
     const redirectTo =
@@ -70,7 +98,10 @@ export const processRemoveVolunteer = async (req, res, next) => {
             : `/projects/${id}`;
 
     try {
-        await removeVolunteer(userId, id);
+        await removeVolunteer(
+            userId,
+            id
+        );
 
         req.flash(
             'success',
@@ -79,7 +110,10 @@ export const processRemoveVolunteer = async (req, res, next) => {
 
         res.redirect(redirectTo);
     } catch (error) {
-        console.error('Error removing volunteer:', error);
+        console.error(
+            'Error removing volunteer:',
+            error
+        );
 
         req.flash(
             'error',

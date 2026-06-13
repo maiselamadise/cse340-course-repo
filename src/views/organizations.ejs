@@ -3,41 +3,72 @@
 <h1>Organizations</h1>
 
 <% if (isAdmin) { %>
-    <p><a href="/new-organization" class="btn">+ Add New Organization</a></p>
+    <p>
+        <a
+            href="/new-organization"
+            class="btn"
+        >
+            + Add New Organization
+        </a>
+    </p>
 <% } %>
 
 <section>
+
     <% if (organizations.length === 0) { %>
+
         <p>No organizations found.</p>
+
     <% } else { %>
+
         <ul class="card-list">
+
             <% organizations.forEach(organization => { %>
+
                 <li class="card">
+
                     <% if (organization.logo_filename) { %>
+
                         <img
                             src="/images/<%= organization.logo_filename %>"
                             alt="<%= organization.name %> logo"
                             class="org-logo"
                         >
+
                     <% } %>
 
                     <div class="card-body">
+
                         <h2>
-                            <a href="/organization/<%= organization.organization_id %>">
+
+                            <a href="/organizations/<%= organization.organization_id %>">
                                 <%= organization.name %>
                             </a>
+
                         </h2>
 
                         <% if (isAdmin) { %>
+
                             <p class="actions">
-                                <a href="/edit-organization/<%= organization.organization_id %>">Edit</a>
+
+                                <a href="/edit-organization/<%= organization.organization_id %>">
+                                    Edit
+                                </a>
+
                             </p>
+
                         <% } %>
+
                     </div>
+
                 </li>
+
             <% }) %>
+
         </ul>
+
     <% } %>
+
 </section>
 
 <%- include('partials/footer') %>
