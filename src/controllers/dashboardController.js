@@ -1,10 +1,15 @@
+```js id="m2q7kp"
+import {
+    getVolunteerProjectsByUserId
+} from '../models/volunteers.js';
+
 export const getDashboard =
     async (req, res) => {
 
         try {
 
             const volunteerProjects =
-                await getUserVolunteerProjects(
+                await getVolunteerProjectsByUserId(
                     req.session.user.user_id
                 );
 
@@ -12,7 +17,13 @@ export const getDashboard =
                 'dashboard',
                 {
                     title: 'Dashboard',
-                    user: req.session.user,
+
+                    name: req.session.user.name,
+
+                    email: req.session.user.email,
+
+                    role: req.session.user.role,
+
                     volunteerProjects
                 }
             );
@@ -24,5 +35,8 @@ export const getDashboard =
             res.status(500).send(
                 'Server Error'
             );
+
         }
+
     };
+```
