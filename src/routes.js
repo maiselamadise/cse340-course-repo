@@ -147,7 +147,7 @@ router.post(
 
 // Show edit project form
 router.get(
-    '/edit-project/:id',
+    '/edit-projects/:id',
     requireRole('admin'),
     projectIdValidation,
     showEditProjectForm
@@ -155,7 +155,7 @@ router.get(
 
 // Process edit project form
 router.post(
-    '/edit-project/:id',
+    '/edit-projects/:id',
     requireRole('admin'),
     projectIdValidation,
     projectValidation,

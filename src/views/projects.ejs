@@ -3,7 +3,7 @@
 <h1>Upcoming Projects</h1>
 
 <% if (isAdmin) { %>
-    <p><a href="/new-project" class="btn">+ Add New Project</a></p>
+    <p><a href="/new-projects" class="btn">+ Add New Project</a></p>
 <% } %>
 
 <section>
@@ -15,7 +15,7 @@
                 <li class="card">
                     <div class="card-body">
                         <h2>
-                            <a href="/project/<%= project.project_id %>">
+                            <a href="/projects/<%= project.project_id %>">
                                 <%= project.title %>
                             </a>
                         </h2>
@@ -35,9 +35,9 @@
                         </p>
 
                         <p class="actions">
-                            <a href="/project/<%= project.project_id %>">View Details</a>
+                            <a href="/projects/<%= project.project_id %>">View Details</a>
                             <% if (isAdmin) { %>
-                                | <a href="/edit-project/<%= project.project_id %>">Edit</a>
+                                | <a href="/edit-projects/<%= project.project_id %>">Edit</a>
                                 | <a href="/assign-categories/<%= project.project_id %>">Assign Categories</a>
                             <% } %>
                         </p>
